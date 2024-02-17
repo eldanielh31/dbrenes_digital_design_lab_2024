@@ -38,8 +38,8 @@
 
 
 set_global_assignment -name FAMILY "Cyclone V"
-set_global_assignment -name DEVICE 5CGXFC7C7F23C8
-set_global_assignment -name TOP_LEVEL_ENTITY FullAdder_4bit
+set_global_assignment -name DEVICE 5CSEMA5F31C6
+set_global_assignment -name TOP_LEVEL_ENTITY Main_FullAdder
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 20.1.1
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "14:44:39  FEBRUARY 14, 2024"
 set_global_assignment -name LAST_QUARTUS_VERSION "20.1.1 Lite Edition"
@@ -61,7 +61,26 @@ set_global_assignment -name EDA_TEST_BENCH_NAME FullAdder_4bit_tb -section_id ed
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id FullAdder_4bit_tb
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME FullAdder_4bit_tb -section_id FullAdder_4bit_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE FullAdder_4bit_tb.vhd -section_id FullAdder_4bit_tb
+set_global_assignment -name BOARD "DE1-SoC Board"
+set_global_assignment -name VHDL_FILE Main_FullAdder.vhd
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_location_assignment PIN_AE26 -to Segments[0]
+set_location_assignment PIN_AE27 -to Segments[1]
+set_location_assignment PIN_AE28 -to Segments[2]
+set_location_assignment PIN_AG27 -to Segments[3]
+set_location_assignment PIN_AF28 -to Segments[4]
+set_location_assignment PIN_AG28 -to Segments[5]
+set_location_assignment PIN_AH28 -to Segments[6]
+set_location_assignment PIN_V16 -to LED
+set_location_assignment PIN_AB12 -to Switches[0]
+set_location_assignment PIN_AC12 -to Switches[1]
+set_location_assignment PIN_AF9 -to Switches[2]
+set_location_assignment PIN_AF10 -to Switches[3]
+set_location_assignment PIN_AD11 -to Switches[4]
+set_location_assignment PIN_AD12 -to Switches[5]
+set_location_assignment PIN_AE11 -to Switches[6]
+set_location_assignment PIN_AC9 -to Switches[7]
+set_location_assignment PIN_AE12 -to Switches[8]
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
