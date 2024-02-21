@@ -12,68 +12,49 @@
 # 
 # vlog -sv -work work +incdir+C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1 {C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1/Bin_BCD.sv}
 # Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
-# Start time: 19:01:22 on Feb 18,2024
+# Start time: 18:58:23 on Feb 19,2024
 # vlog -reportprogress 300 -sv -work work "+incdir+C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1" C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1/Bin_BCD.sv 
 # -- Compiling module Bin_BCD
 # 
 # Top level modules:
 # 	Bin_BCD
-# End time: 19:01:22 on Feb 18,2024, Elapsed time: 0:00:00
+# End time: 18:58:23 on Feb 19,2024, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
-# 
-# vlog -sv -work work +incdir+C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1 {C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1/Bin_BCD.sv}
+# vlog -sv -work work +incdir+C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1 {C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1/seven_segments.sv}
 # Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
-# Start time: 19:01:22 on Feb 18,2024
-# vlog -reportprogress 300 -sv -work work "+incdir+C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1" C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1/Bin_BCD.sv 
-# -- Compiling module Bin_BCD
+# Start time: 18:58:24 on Feb 19,2024
+# vlog -reportprogress 300 -sv -work work "+incdir+C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1" C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1/seven_segments.sv 
+# -- Compiling module seven_segments
 # 
 # Top level modules:
-# 	Bin_BCD
-# End time: 19:01:22 on Feb 18,2024, Elapsed time: 0:00:00
+# 	seven_segments
+# End time: 18:58:24 on Feb 19,2024, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
-# vlog -sv -work work +incdir+C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1 {C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1/Bin_BCD_tb.sv}
+# vlog -sv -work work +incdir+C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1 {C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1/Main.sv}
 # Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
-# Start time: 19:01:22 on Feb 18,2024
-# vlog -reportprogress 300 -sv -work work "+incdir+C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1" C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1/Bin_BCD_tb.sv 
-# -- Compiling module Bin_BCD_tb
-# 
-# Top level modules:
-# 	Bin_BCD_tb
-# End time: 19:01:23 on Feb 18,2024, Elapsed time: 0:00:01
-# Errors: 0, Warnings: 0
-# 
-# vsim -t 1ps -L altera_ver -L lpm_ver -L sgate_ver -L altera_mf_ver -L altera_lnsim_ver -L cyclonev_ver -L cyclonev_hssi_ver -L cyclonev_pcie_hip_ver -L rtl_work -L work -voptargs="+acc"  Bin_BCD
-# vsim -t 1ps -L altera_ver -L lpm_ver -L sgate_ver -L altera_mf_ver -L altera_lnsim_ver -L cyclonev_ver -L cyclonev_hssi_ver -L cyclonev_pcie_hip_ver -L rtl_work -L work -voptargs=""+acc"" Bin_BCD 
-# Start time: 19:01:23 on Feb 18,2024
+# Start time: 18:58:24 on Feb 19,2024
+# vlog -reportprogress 300 -sv -work work "+incdir+C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1" C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1/Main.sv 
+# -- Compiling module Main
+# ** Error: C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1/Main.sv(21): (vlog-2110) Illegal reference to net "binary_input".
+# End time: 18:58:24 on Feb 19,2024, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 0
+# ** Error: C:/intelFPGA/20.1/modelsim_ase/win32aloem/vlog failed.
+# Error in macro ./Problema1_run_msim_rtl_verilog.do line 10
+# C:/intelFPGA/20.1/modelsim_ase/win32aloem/vlog failed.
+#     while executing
+# "vlog -sv -work work +incdir+C:/Users/manue/Escritorio/dbrenes_digital_design_lab_2024/laboratorio_1/Problema1 {C:/Users/manue/Escritorio/dbrenes_digit..."
+vsim work.seven_segments
+# vsim work.seven_segments 
+# Start time: 18:58:30 on Feb 19,2024
 # Loading sv_std.std
-# Loading work.Bin_BCD
-# 
-# add wave *
+# Loading work.seven_segments
+add wave -position end  sim:/seven_segments/bcd_input
 # ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
 #           File in use by: manue  Hostname: LAPTOP-GB4ACP2F  ProcessID: 18212
-#           Attempting to use alternate WLF file "./wlftdqk0v8".
+#           Attempting to use alternate WLF file "./wlftqymmea".
 # ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
-#           Using alternate file: ./wlftdqk0v8
-# view structure
-# .main_pane.structure.interior.cs.body.struct
-# view signals
-# .main_pane.objects.interior.cs.body.tree
-# run -all
-vsim work.Bin_BCD_tb
-# End time: 19:01:51 on Feb 18,2024, Elapsed time: 0:00:28
-# Errors: 0, Warnings: 2
-# vsim work.Bin_BCD_tb 
-# Start time: 19:01:52 on Feb 18,2024
-# Loading sv_std.std
-# Loading work.Bin_BCD_tb
-# Loading work.Bin_BCD
-add wave -position end  sim:/Bin_BCD_tb/binary_input
-# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
-#           File in use by: manue  Hostname: LAPTOP-GB4ACP2F  ProcessID: 18212
-#           Attempting to use alternate WLF file "./wlfttb88rc".
-# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
-#           Using alternate file: ./wlfttb88rc
-add wave -position end  sim:/Bin_BCD_tb/bcd_output
+#           Using alternate file: ./wlftqymmea
+add wave -position end  sim:/seven_segments/seg
 run -all
-# End time: 19:04:28 on Feb 18,2024, Elapsed time: 0:02:36
+# End time: 18:59:05 on Feb 19,2024, Elapsed time: 0:00:35
 # Errors: 0, Warnings: 2
