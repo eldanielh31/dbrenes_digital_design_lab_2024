@@ -1,6 +1,6 @@
 module full_adder (
   input A, B, Cin,
-  output C, Cout
+  output logic C, Cout
 );
 
   assign C = A ^ B ^ Cin;
@@ -12,7 +12,7 @@ module adder_4_bits (
   input [3:0] A,
   input [3:0] B,
   output [3:0] Sum,
-  output Cout
+  output logic Cout
 );
 
   wire [3:0] S;
