@@ -33,8 +33,8 @@ module substractor_4_bits_tb;
 	 
 	 #30
 	 
-	 A = 4'b0001;
-	 B = 4'b1001;
+	 A = 4'b0010;
+    B = 4'b1001;
 	 
 	 #30
 	 

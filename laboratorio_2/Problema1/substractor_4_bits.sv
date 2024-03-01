@@ -18,22 +18,27 @@ module substractor_4_bits #(parameter N=4)(
   output reg flagZ,
   output reg flagN
 );
-
+  wire [N-1:0] A_complement;
   wire [N-1:0] B_complement;
   wire [N-1:0] Sum;
-
+	
+  complement #(N) comp_A (.in(A), .complement(A_complement));
   complement #(N) comp_B (.in(B), .complement(B_complement));
 
-  adder_4_bits #(N) adder (.A(A), .B(B_complement), .Sum(Sum), .Cout(Bout), .flagV(flagV), .flagC(flagC), .flagZ(flagZ));
+  adder_4_bits #(N) adder (.A((A >= B) ? A : A_complement), .B((A >= B) ? B_complement : B), .Sum(Sum), .Cout(Bout), .flagV(flagV), .flagC(flagC), .flagZ(flagZ));
 
   assign Difference = Sum;
   
   always_comb begin
-  
-		flagN = 0;
 		
-		if (Difference != 0)begin
-			flagN = ~Bout;
+		flagN = 0;
+		flagZ = 0;
+		
+		if (A < B) begin
+			flagN = 1;
+		end
+		else if (A > B) begin
+			flagN = 0;
 		end
   end 
  
