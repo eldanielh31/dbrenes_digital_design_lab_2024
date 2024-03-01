@@ -6,7 +6,6 @@ module substractor_4_bits_tb;
   wire Bout;
   reg flagV;
   reg flagC;
-  reg flagZ;
   reg flagN;
 
   substractor_4_bits uut (
@@ -16,7 +15,6 @@ module substractor_4_bits_tb;
     .Bout(Bout),
 	 .flagV(flagV),
 	 .flagC(flagC),
-	 .flagZ(flagZ),
 	 .flagN(flagN)
   );
 

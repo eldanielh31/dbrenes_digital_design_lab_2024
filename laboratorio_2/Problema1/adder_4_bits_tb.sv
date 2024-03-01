@@ -13,7 +13,6 @@ module adder_4_bits_tb;
     .Cout(Cout),
 	 .flagV(flagV),
 	 .flagC(flagC),
-	 .flagZ(flagZ)
   );
 
   initial begin

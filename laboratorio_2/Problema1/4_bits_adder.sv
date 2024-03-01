@@ -1,21 +1,20 @@
-module full_adder (
-  input A, B, Cin,
-  output logic C, Cout
+module full_adder ( //1 bit adder module
+  input A, B, Cin, //Inputs
+  output logic C, Cout //Outputs
 );
 
-  assign C = A ^ B ^ Cin;
-  assign Cout = (A & B) | (B & Cin) | (A & Cin);
+  assign C = A ^ B ^ Cin; //XOR operation to get the result
+  assign Cout = (A & B) | (B & Cin) | (A & Cin); //Operations to get the carry out
 
 endmodule
 
-module adder_4_bits #(parameter N=4)(
+module adder_4_bits #(parameter N=4)( //4 bits adder module
   input [N-1:0] A,
   input [N-1:0] B,
   output [N-1:0] Sum,
   output logic Cout,
   output reg flagV,
-  output reg flagC,
-  output reg flagZ
+  output reg flagC
 );
 
   wire [3:0] S;
@@ -33,14 +32,11 @@ module adder_4_bits #(parameter N=4)(
   always_comb begin
     flagC = 0;
     flagV = 0;
-    flagZ = 0;
-
-    if (Sum == 0) begin
-      flagZ = 1;
-    end
   
-    else if (Cout == 1) begin
+    if (Cout == 1) begin
       flagC = 1;
     end 
+	 
+	 flagV = (A[N-1] & B[N-1] & ~Sum[N-1]) | (~A[N-1] & ~B[N-1] & Sum[N-1]);
   end
 endmodule
