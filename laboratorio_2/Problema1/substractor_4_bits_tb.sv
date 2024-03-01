@@ -4,12 +4,20 @@ module substractor_4_bits_tb;
   reg [3:0] B;
   wire [3:0] Difference;
   wire Bout;
+  reg flagV;
+  reg flagC;
+  reg flagZ;
+  reg flagN;
 
-  subtractor_4_bits uut (
+  substractor_4_bits uut (
     .A(A),
     .B(B),
     .Difference(Difference),
-    .Bout(Bout)
+    .Bout(Bout),
+	 .flagV(flagV),
+	 .flagC(flagC),
+	 .flagZ(flagZ),
+	 .flagN(flagN)
   );
 
   initial begin
@@ -22,6 +30,21 @@ module substractor_4_bits_tb;
     // Caso de prueba 2: A < B
     A = 4'b0011;
     B = 4'b1101;
+	 
+	 #30
+	 
+	 A = 4'b0001;
+	 B = 4'b1001;
+	 
+	 #30
+	 
+	 A = 4'b0000;
+	 B = 4'b0000;
+	 
+	 #30
+	 
+	 A = 4'b0010;
+	 B = 4'b0001;
 	 
 
   end

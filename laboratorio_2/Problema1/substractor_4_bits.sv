@@ -1,22 +1,40 @@
-module substractor_4_bits (
-  input [3:0] A, 
-  input [3:0] B,  
-  output [3:0] result, 
-  output borrow 
+module complement #(parameter N=4)(
+	input [N-1:0] in,
+	output reg [N-1:0] complement);
+	
+	always_comb begin
+		complement = (~in) + 1'b1;
+	end
+	
+endmodule
+
+module substractor_4_bits #(parameter N=4)(
+  input [N-1:0] A,
+  input [N-1:0] B,
+  output [N-1:0] Difference,
+  output logic Bout,
+  output reg flagV,
+  output reg flagC,
+  output reg flagZ,
+  output reg flagN
 );
 
-  wire [3:0] A_not;  
-  wire [3:0] B_plus_1;  
-  wire [3:0] sum;    
+  wire [N-1:0] B_complement;
+  wire [N-1:0] Sum;
 
-  assign A_not = ~A + 4'b1;
+  complement #(N) comp_B (.in(B), .complement(B_complement));
 
+  adder_4_bits #(N) adder (.A(A), .B(B_complement), .Sum(Sum), .Cout(Bout), .flagV(flagV), .flagC(flagC), .flagZ(flagZ));
+
+  assign Difference = Sum;
   
-  assign B_plus_1 = B + 4'b1;
-
-  assign sum = A_not + B_plus_1;
-
-  assign result = sum[3:0];
-  assign borrow = sum[4];
-
+  always_comb begin
+  
+		flagN = 0;
+		
+		if (Difference != 0)begin
+			flagN = ~Bout;
+		end
+  end 
+ 
 endmodule
