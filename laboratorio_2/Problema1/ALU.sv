@@ -10,23 +10,52 @@ module ALU (
 );
 
   wire [3:0] sum_result; // Salida del sumador
-  wire logic Cout;
+  wire Cout; // Acarreo del sumador
 
-  adder_4_bits uut_adder (
+  wire [3:0] sub_result; // Salida del restador
+  wire Bout; // Acarreo del restador
+
+  adder_4_bits #(4) uut_adder (
     .A(A),
     .B(B),
     .Sum(sum_result),
-    .Cout(Cout)
+    .Cout(Cout),
+    .flagV(flagV), // Conectar directamente a la señal del módulo ALU
+    .flagC(flagC),
+    .flagZ()
   );
 
-always_comb begin
-  case (op)
-    2'b00: C = sum_result; // Suma
-    2'b01: C = A - B; // resta
-    2'b10: C = A * B; // multiplicación
-    default: C = 5'b00000;
-  endcase
-end
+  substractor_4_bits #(4) uut_sub (
+    .A(A),
+    .B(B),
+    .Difference(sub_result),
+    .Bout(Bout),
+    .flagV(), // Conectar directamente a la señal del módulo ALU
+    .flagC(),
+    .flagZ(),
+    .flagN(flagN)
+  );
 
+  always_comb begin
+    case (op)
+      2'b00: C = sum_result; // Suma
+      2'b01: C = sub_result; // Resta
+      2'b10: C = A * B; // Multiplicación
+      default: C = 4'b0000; // Valor predeterminado
+    endcase
+  end
+
+  always_comb begin
+    // flagC se asigna aquí, fuera del bloque always_comb anterior
+    flagC = Bout;
+    // flagZ se asigna aquí, fuera del bloque always_comb anterior
+    if (C == 4'b0000 && flagC !=1)begin
+		flagZ = 1;
+	 end
+	 else begin
+		flagZ = 0;
+	 end
+  end
 
 endmodule
+

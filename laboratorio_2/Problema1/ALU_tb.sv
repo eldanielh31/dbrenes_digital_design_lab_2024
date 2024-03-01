@@ -4,14 +4,20 @@ module ALU_tb;
   reg [3:0] B;
   reg [1:0] op;
   wire [3:0] C;
-  wire [1:0] flag;
+  reg flagV;
+  reg flagZ;
+  reg flagC;
+  reg flagN;
 
   ALU uut (
     .A(A),
     .B(B),
     .op(op),
     .C(C),
-    .flag(flag)
+    .flagN(flagN),
+	 .flagC(flagC),
+	 .flagV(flagV),
+	 .flagZ(flagZ)
   );
 
   initial begin
@@ -22,7 +28,19 @@ module ALU_tb;
     #30; // Espera un poco
 	 A = 4'b1110;
     B = 4'b0001;
+    op = 2'b01;
+	 #30; // Espera un poco
+	 A = 4'b0010;
+    B = 4'b1001;
+    op = 2'b01;
+	 #30; // Espera un poco
+	 A = 4'b0000;
+    B = 4'b0000;
     op = 2'b00;
+	 #30; // Espera un poco
+	 A = 4'b0000;
+    B = 4'b0000;
+    op = 2'b01;
   end
 
 endmodule
