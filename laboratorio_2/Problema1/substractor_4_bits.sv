@@ -13,7 +13,6 @@ module substractor_4_bits #(parameter N=4)( //Module to substract two 4 bits num
   input [N-1:0] B, //4 bits input 
   output [N-1:0] Difference, //Result
   output logic Bout, //Carry out
-  output reg flagV, //Overflow flag
   output reg flagC, //Carry flag	
   output reg flagN //Negative flag
 );
@@ -41,9 +40,6 @@ module substractor_4_bits #(parameter N=4)( //Module to substract two 4 bits num
 		else begin 
 			flagN = 0;
 		end
-		
-		//Sets the overflow flag
-		flagV = (A >= B && A_complement >= B_complement) || (A < B && A >= B_complement && A_complement < B_complement);
   end 
  
 endmodule

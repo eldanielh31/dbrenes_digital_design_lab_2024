@@ -4,15 +4,14 @@ module adder_4_bits_tb;
   reg [3:0] B;
   wire [3:0] Sum;
   wire Cout;
-  reg flagV, flagC, flagZ;
+  reg flagC, flagZ;
 
   adder_4_bits uut (
     .A(A),
     .B(B),
     .Sum(Sum),
     .Cout(Cout),
-	 .flagV(flagV),
-	 .flagC(flagC),
+	 .flagC(flagC)
   );
 
   initial begin

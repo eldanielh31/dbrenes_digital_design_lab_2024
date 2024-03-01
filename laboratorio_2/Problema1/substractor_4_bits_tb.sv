@@ -4,7 +4,6 @@ module substractor_4_bits_tb;
   reg [3:0] B;
   wire [3:0] Difference;
   wire Bout;
-  reg flagV;
   reg flagC;
   reg flagN;
 
@@ -13,7 +12,6 @@ module substractor_4_bits_tb;
     .B(B),
     .Difference(Difference),
     .Bout(Bout),
-	 .flagV(flagV),
 	 .flagC(flagC),
 	 .flagN(flagN)
   );

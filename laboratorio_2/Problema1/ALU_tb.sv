@@ -8,6 +8,7 @@ module ALU_tb;
   reg flagZ;
   reg flagC;
   reg flagN;
+  reg [6:0] seg;
 
   ALU uut (
     .A(A),
@@ -17,7 +18,8 @@ module ALU_tb;
     .flagN(flagN),
 	 .flagC(flagC),
 	 .flagV(flagV),
-	 .flagZ(flagZ)
+	 .flagZ(flagZ),
+	 .seg(seg)
   );
 
   initial begin
