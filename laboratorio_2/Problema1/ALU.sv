@@ -2,7 +2,7 @@ module ALU #(parameter N=4)( //Main module
 
   input logic [N-1:0] A, //Input 1
   input logic [N-1:0] B, //Input 2
-  input logic [1:0] op, //Arimetic or logic operation
+  input logic [3:0] op, //Arimetic or logic operation
   
   output logic [N-1:0] C, //Result of the operation it executes
   output reg [6:0] seg, // Var for the seven segments output
@@ -12,30 +12,17 @@ module ALU #(parameter N=4)( //Main module
   output reg flagV //Flag for a overflow
 );
 
-  wire [N-1:0] sum_result; //Output of the adder
-  wire Cout; //Carry of the adder
-
-  wire [N-1:0] sub_result; //Output of the subtractor
-  wire Bout; //Carry of the subtractor
-  
-  //Instance of the adder module
-  adder_4_bits #(N) uut_adder (
-    .A(A),
-    .B(B),
-    .Sum(sum_result),
-    .Cout(Cout), 
-    .flagC(flagC)
-  );
-	
-  //Instance of the subtractor module
-  substractor_4_bits #(N) uut_sub (
-    .A(A),
-    .B(B),
-    .Difference(sub_result),
-    .Bout(Bout),
-    .flagN(flagN)
-  );
-
+	// INSTANCIA ALU
+	ALU_aux #(.N(N)) alu1(
+		.A(a),
+		.B(b),
+		.op(op),
+		.flagC(flagC),
+		.flagN(flagN),
+		.flagV(flagV),
+		.flagZ(flagZ),
+		.seg(seg));
+/*
   always_comb begin
     case (op)
       2'b00: C = sum_result; //Result of the adder
@@ -77,7 +64,7 @@ module ALU #(parameter N=4)( //Main module
       default: seg = 7'b1111111; // Display nothing if BCD is out of range
    endcase
 end
-  
+  */
 endmodule
 
 

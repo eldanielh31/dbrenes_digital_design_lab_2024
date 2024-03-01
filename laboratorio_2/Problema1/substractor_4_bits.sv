@@ -24,7 +24,7 @@ module substractor_4_bits #(parameter N=4)( //Module to substract two 4 bits num
   complement #(N) comp_B (.in(B), .complement(B_complement)); //Instance to get the A complement
 
   //Instance to add the complement of the minor number and the other input
-  adder_4_bits #(N) adder (.A((A >= B) ? A : A_complement), .B((A >= B) ? B_complement : B), .Sum(Sum), .Cout(Bout), .flagV(flagV), .flagC(flagC));
+  adder_4_bits #(N) adder (.A((A >= B) ? A : A_complement), .B((A >= B) ? B_complement : B), .Sum(Sum), .Cout(Bout), .flagC(flagC));
 	
   //Sets the result of the add operation to the result of all the module
   assign Difference = Sum;
