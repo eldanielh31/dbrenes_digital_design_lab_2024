@@ -2,8 +2,8 @@ module ALU_aux #(parameter N=4) (
 
 	input logic [N-1:0] A,
 	input logic [N-1:0] B, 
-	input logic [N-1:0] C,
-	input [3:0] op, 
+	input [1:0] op, 
+	output reg [N-1:0] C,
 	output reg flagC,
 	output reg flagN,
 	output reg flagV,
@@ -18,6 +18,7 @@ module ALU_aux #(parameter N=4) (
 
   wire [N-1:0] sub_result; //Output of the subtractor
   wire Bout; //Carry of the subtractor
+  
   
   //Instance of the adder module
   adder_4_bits #(N) uut_adder (
@@ -35,6 +36,20 @@ module ALU_aux #(parameter N=4) (
     .Difference(sub_result),
     .Bout(Bout),
     .flagN(flagN)
-  );									
-									
+  );		
+
+	Mux #(N) uut_mux(
+	  .sum(sum_result),
+	  .sub(sub_result),
+	  .op(op),
+	  .C(C)
+	);
+	
+	
+	seven_segments #(N) uut_seven_seg(
+		.C(C),
+		.seg(seg)
+	);
+	
+					
 endmodule 
