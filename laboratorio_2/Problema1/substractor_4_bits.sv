@@ -14,7 +14,9 @@ module substractor_4_bits #(parameter N=4)( //Module to substract two 4 bits num
   output [N-1:0] Difference, //Result
   output logic Bout, //Carry out
   output reg flagC, //Carry flag	
-  output reg flagN //Negative flag
+  output reg flagN, //Negative flag
+  output reg flagV, //Overflow flag
+  output reg flagZ //Zero flag
 );
   wire [N-1:0] A_complement; //Complement of A input
   wire [N-1:0] B_complement; //Complement of B input
@@ -33,10 +35,20 @@ module substractor_4_bits #(parameter N=4)( //Module to substract two 4 bits num
 		
 		//Initialize variables
 		flagN = 0;
+		flagZ = 0;
+		flagV = 0;
+		
+		//Operation to check if the operation has an overflow
+		flagV = ((A[N-1] & B[N-1] & (~Difference[N-1])) | ((~A[N-1]) & (~B[N-1]) & Difference[N-1]));
 		
 		if (A < B) begin //Checks if the first number is less than the second number 
 			flagN = 1; //In that case puts the flag to negative
 		end
+		
+		else if (Difference == 0) begin
+			flagZ = 1;
+		end
+		
 		else begin 
 			flagN = 0;
 		end

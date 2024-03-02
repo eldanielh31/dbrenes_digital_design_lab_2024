@@ -1,8 +1,8 @@
 module Mux #(parameter N=4) (
 	
-	input logic [N-1:0] sum, sub, 
-	input [1:0] op,
-	output reg [N-1:0] C);
+	input logic [N-1:0] sum, sub, //Inputs
+	input [1:0] op, //Input of the operation
+	output reg [N-1:0] C); //Result
 
 
 	always_comb begin

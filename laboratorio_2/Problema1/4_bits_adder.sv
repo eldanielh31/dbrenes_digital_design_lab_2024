@@ -13,7 +13,9 @@ module adder_4_bits #(parameter N=4)( //4 bits adder module
   input [N-1:0] B, //Input 2
   output [N-1:0] Sum, //Result
   output logic Cout, //Carry out 
-  output reg flagC //Carry flag
+  output reg flagC, //Carry flag
+  output reg flagZ, //Zero flag
+  output reg flagV //Overflow flag
 );
 
   wire [3:0] S; //Wire of the result 
@@ -32,10 +34,18 @@ module adder_4_bits #(parameter N=4)( //4 bits adder module
   always_comb begin
 	 //Initialize variables
     flagC = 0; 
+	 flagZ = 0;
+	 flagV = 0;
+	 
+	 //Operation to check if the operation has an overflow
+	 flagV = ((A[N-1] & B[N-1] & (~Sum[N-1])) | ((~A[N-1]) & (~B[N-1]) & Sum[N-1]));
 	 
 	 //Checks if the sum has a carry
     if (Cout == 1) begin 
       flagC = 1;
     end 
+	 else if (Sum == 0)begin
+		flagZ = 1;
+	 end
   end
 endmodule
