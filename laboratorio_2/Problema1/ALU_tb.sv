@@ -245,6 +245,25 @@ module ALU_tb;
 		b = 4'b0010;
 		#10;
 		
+		// MULTIPLICACION A*B
+		operation = 11;
+		
+		a = 4'b0000;
+		b = 4'b0000;
+		#10;
+		
+		a = 4'b1111;
+		b = 4'b0000;
+		#10;
+		
+		a = 4'b0000;
+		b = 4'b1111;
+		#10;
+		
+		a = 4'b1111;
+		b = 4'b1111;
+		#10;
+		
 	end
 	
 endmodule 

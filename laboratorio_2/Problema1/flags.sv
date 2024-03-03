@@ -5,10 +5,10 @@
 
 module flags #(parameter N=4) (
 
-	input logic [1:0] inFlagC,
+	input logic [2:0] inFlagC,
 	input logic inFlagN,
-	input logic [1:0] inFlagV,
-	input logic [10:0] inFlagZ,
+	input logic [2:0] inFlagV,
+	input logic [11:0] inFlagZ,
 	input [3:0] operation,
 	output reg outFlagC,
 	output reg outFlagN,
@@ -67,6 +67,13 @@ module flags #(parameter N=4) (
 				
 			// OPERACIÓN LShiftRight
 			10: outFlagZ = inFlagZ[10];
+			
+			// OPERACIÓN MULTIPLICACION DE A*B
+			11: begin 
+					outFlagC = inFlagC[2];
+					outFlagV = inFlagV[2];
+					outFlagZ = inFlagZ[11];
+				end
 			
 			default: begin 
 							outFlagC = 0;
