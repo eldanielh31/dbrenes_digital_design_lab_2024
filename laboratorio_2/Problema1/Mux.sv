@@ -7,7 +7,7 @@ module mux4 #(parameter N=4) (
 	
 	input logic [N-1:0] in1, in2, 
 	input logic [N-1:0] in3, in4, in5, in6, in7,
-	input logic [N-1:0] in8, in9, in10, in11, in12,
+	input logic [N-1:0] in8, in9, in10, in11, in12, in13,
 	input [3:0] operation,
 	output reg [N-1:0] out);
 
@@ -53,6 +53,9 @@ module mux4 #(parameter N=4) (
 			
 			// OPERACION MULTIPLICACION
 			11: out = in12;
+			
+			//OPERACION DIVISION
+			12: out = in13;
 			
 			default: out = 0;
 

@@ -264,6 +264,17 @@ module ALU_tb;
 		b = 4'b1111;
 		#10;
 		
+		// DIVISION A/B
+		operation = 12;
+		
+		a = 4'b0000;
+		b = 4'b1111;
+		#10;
+		
+		a = 4'b1111;
+		b = 4'b1111;
+		#10;
+		
 	end
 	
 endmodule 

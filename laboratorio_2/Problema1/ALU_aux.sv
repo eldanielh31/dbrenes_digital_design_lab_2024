@@ -26,12 +26,13 @@ module alu #(parameter N=4) ( input logic [N-1:0] a,
 	wire [N-1:0] r10; // RESULTADO LShifLeft
 	wire [N-1:0] r11; // RESULTADO LShifRight
 	wire [N-1:0] r12; // RESULTADO Multiplicacion
+	wire [N-1:0] r13; // RESULTADO DIVISION
 	
 	
-	wire [2:0] flagC; 	// FLAG DE ACARREO
+	wire [3:0] flagC; 	// FLAG DE ACARREO
 	wire flagN; 			// FLAG DE NEGATIVO
-	wire [2:0] flagV; 	// FLAG DE OVERFLOW
-	wire [11:0] flagZ; 	// FLAG DE CERO
+	wire [3:0] flagV; 	// FLAG DE OVERFLOW
+	wire [12:0] flagZ; 	// FLAG DE CERO
 	
 	reg [N-1:0] result; // RESULTADO FINAL
 	
@@ -115,13 +116,21 @@ module alu #(parameter N=4) ( input logic [N-1:0] a,
 										.result(r11),
 										.flagZ(flagZ[10]));
 										
-		// INSTANCIA OPERACIÓN MULTIPLICACION DE A*B
+	// INSTANCIA OPERACIÓN MULTIPLICACION DE A*B
 	MULTIPLICACION_op #(.N(N)) g15 (.a(a), 
 								.b(b), 
 								.result(r12),
 								.flagC(flagC[2]),
 								.flagV(flagV[2]),
 								.flagZ(flagZ[11]));
+								
+	// INSTANCIA OPERACIÓN DIVISION DE A/B
+	DIVISION_op #(.N(N)) g16 (.a(a), 
+								.b(b), 
+								.result(r13),
+								.flagC(flagC[3]),
+								.flagV(flagV[3]),
+								.flagZ(flagZ[12]));
 	
 	
 	// INSTANCIA MUX
@@ -137,6 +146,7 @@ module alu #(parameter N=4) ( input logic [N-1:0] a,
 							.in10(r10),
 							.in11(r11),
 							.in12(r12),
+							.in13(r13),
 							.operation(operation),
 							.out(result));
 							
