@@ -12,21 +12,29 @@ module FSM (
 
     // Actual state logic
     always_ff @(posedge clk or posedge rst) begin
+	 
         if (rst) begin
             state <= 2'b00;
 				maintenance_count <= 8'b0;
             cicles_count <= 8'b0;
         end
-		  else if (next_state == 2'b01) begin
-            maintenance_count <= maintenance_count + 8'b1;
-            cicles_count <= 8'b0;
-        end
-        else if (next_state == 2'b10) begin
-            cicles_count <= cicles_count + 8'b1;
-        end
-        else begin
+		  
+		  else begin
+		  
             state <= next_state;
+				
+				if (state == 2'b01) begin
+					maintenance_count <= maintenance_count + 8'b1;
+					cicles_count <= 8'b0;
+				end
+			  
+				else if (state == 2'b10) begin
+					cicles_count <= cicles_count + 8'b1;
+				end
+				
+				
         end
+		  
     end
 
     // Next state logic
@@ -49,7 +57,8 @@ module FSM (
     end
 
     // Output logic
-    assign error_code = (state == 2'b10) ? 8'hFF : 8'h00; // Error code 0xFF when waiting
-    assign maintenance_counter = (state == 2'b11) ? maintenance_count : 8'b0; // Maintenance count
+    assign error_code = (state == 2'b11) ? 8'hFF : 8'h00; // Error code 0xFF when waiting
+    assign maintenance_counter = maintenance_count;
+	 assign cicles_counter = cicles_count;
 
 endmodule
