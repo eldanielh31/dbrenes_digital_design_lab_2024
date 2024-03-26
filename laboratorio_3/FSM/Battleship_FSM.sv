@@ -51,7 +51,7 @@ module Battleship_FSM (
 								  PLAY;
       end
       WIN, LOSE: begin
-        next_state_reg = state_reg;$
+        next_state_reg = state_reg;
       end
       default: next_state_reg = START;
     endcase
