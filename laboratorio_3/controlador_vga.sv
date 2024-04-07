@@ -11,8 +11,8 @@ module controlador_vga(	input  clock,
 	logic [0:9] pixel_num;
 	logic [0:9] linea_num;
 	logic cambio_linea;
-	reg [1:0] matrix_player [0:4][0:4] = '{'{0, 0, 0, 0, 0}, '{0, 0, 0, 1, 1}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}};
-	reg [11:0] matrixGame_right [0:4][0:4] = '{'{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}};
+	reg [1:0] matrix_player [0:4][0:4] = '{'{0, 0, 0, 2, 0}, '{0, 0, 0, 1, 1}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}};
+	reg [1:0] matrix_pc [0:4][0:4] = '{'{1, 0, 0, 0, 0}, '{0, 2, 3, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}};
 	logic clock_25;
 
    //generate
@@ -41,6 +41,7 @@ module controlador_vga(	input  clock,
         .x(pixel_num),
         .y(linea_num),
 		  .matrix_player(matrix_player),
+		  .matrix_pc(matrix_pc),
         .red(red),
         .green(green),
         .blue(blue));

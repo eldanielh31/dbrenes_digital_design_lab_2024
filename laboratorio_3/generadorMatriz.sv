@@ -11,6 +11,7 @@ module generadorMatriz #(parameter ancho = 4'd5) (
     logic color_blanco;
 	 logic color_azul;
 	 logic color_rojo;
+	 logic color_verde;
     logic [0:9] stepx;
     logic [0:9] stepy;
     logic [0:9] x0;
@@ -24,6 +25,8 @@ module generadorMatriz #(parameter ancho = 4'd5) (
         color_blanco = 0;
 		  color_azul = 0;
 		  color_rojo = 0;
+		  color_verde = 0;
+		  
         i = 0;
         j = 0;
 
@@ -66,12 +69,19 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 				x0 = stepx / 10'd2 + ancho / 10'd2;
 				for(j=0;j < 5;j= j + 1)begin 
 					if (matrix_player[i][j] == 2'd1) begin
-                    caso_destruido;
+                    caso_destruido_player();
                 end 
-					 x0 = x0 + stepx;
-					 if (matrix_pc[i][j] == 2'd2) begin 
-						caso_destruido;
+					 else if (matrix_player[i][j] == 2'd2) begin
+						caso_fallo_player();
 					 end
+					 if (matrix_pc[i][j] == 2'd1) begin 
+						caso_seleccionado();
+					 end else if (matrix_pc[i][j] == 2'd2) begin 
+						caso_destruido_pc();
+					 end else if (matrix_pc[i][j] == 2'd3) begin 
+						caso_fallo_pc();
+					 end
+					 x0 = x0 + stepx; 
 				end
 				y0 = y0 + stepy;
 		  end
@@ -89,6 +99,10 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 				red = 8'b11111111;
             green = 8'b00000000;
             blue = 8'b00000000;
+		  end else if (color_verde)begin 
+				red = 8'b00000000;
+            green = 8'b11111111;
+            blue = 8'b00000000;
 		  end else begin
             red = 8'b00000000;
             green = 8'b00000000;
@@ -97,11 +111,42 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 		  
     end
 	 
-	 function void caso_destruido();
+	 function void caso_destruido_player();
 		 if (x >= x0 - ajuste_x && x < x0 - ajuste_x + stepx && y >= y0 + ajuste_y && y < y0 + ajuste_y + stepy) begin
 					
 				color_rojo = 1;
 		end 
+	 endfunction
+	 
+	 function void caso_fallo_player();
+		if (x >= x0 - ajuste_x && x < x0 - ajuste_x + stepx && y >= y0 + ajuste_y && y < y0 + ajuste_y + stepy) begin
+					
+				color_verde = 1;
+		end 
+	 endfunction
+	 
+	 function void caso_seleccionado();
+		if (x >= x0 - ajuste_x + 320 && x < x0 - ajuste_x + 317 + stepx && y >= y0 + ajuste_y && y < y0 + ajuste_y + stepy) begin
+					
+				color_blanco = 1;
+		end 
+	endfunction
+		
+	function void caso_destruido_pc();
+		if (x >= x0 - ajuste_x + 320 && x < x0 - ajuste_x + 317 + stepx && y >= y0 + ajuste_y && y < y0 + ajuste_y + stepy) begin
+					
+				color_rojo = 1;
+		end 
+	endfunction
+	
+		
+	function void caso_fallo_pc();
+		if (x >= x0 - ajuste_x + 320 && x < x0 - ajuste_x + 320 + stepx && y >= y0 + ajuste_y && y < y0 + ajuste_y + stepy) begin
+					
+				color_verde = 1;
+		end
+		
+		
 	 endfunction
 endmodule
 
