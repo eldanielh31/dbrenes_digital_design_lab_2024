@@ -1,16 +1,16 @@
 module Battleship_Board(
     input logic clk,
     input logic rst,
-    input logic [3:0] row,
-    input logic [3:0] col,
+    input logic [4:0] row,
+    input logic [4:0] col,
     input logic fire,
     output logic hit,
     output logic [7:0] state
 );
 
     // Parámetros para definir el tamaño del tablero
-    parameter ROWS = 4;
-    parameter COLS = 4;
+    parameter ROWS = 5;
+    parameter COLS = 5;
 
     // Declaración de variables internas
     logic [7:0] board [0:ROWS-1][0:COLS-1]; // Matriz que representa el tablero
@@ -42,7 +42,7 @@ module Battleship_Board(
             if (cell_state[7:4] != 4'b0000) begin
                 // Si la celda contiene un barco
                 hit <= 1'b1;
-                board[row][col] = {4'b0000, cell_state[3:0]}; // Marcar el barco como impactado
+                board[row][col] = {4'b0000, cell_state[4:0]}; // Marcar el barco como impactado
             end else begin
                 // Si la celda no contiene un barco
                 hit <= 1'b0;

@@ -94,3 +94,6 @@ set_global_assignment -name SYSTEMVERILOG_FILE contador_horizontal.sv
 set_global_assignment -name SYSTEMVERILOG_FILE comparador_mayor.sv
 set_global_assignment -name SYSTEMVERILOG_FILE comparador_igual.sv
 set_global_assignment -name SYSTEMVERILOG_FILE controls.sv
+set_global_assignment -name SYSTEMVERILOG_FILE Battleship_FSM.sv
+set_global_assignment -name SYSTEMVERILOG_FILE Battleship_Board.sv
+set_global_assignment -name SYSTEMVERILOG_FILE main_aux.sv
