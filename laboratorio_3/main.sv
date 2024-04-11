@@ -29,7 +29,7 @@ main_aux main_aux_inst(
 				.n_blank(n_blank));
 
 
-);
+
 
 
 endmodule 
