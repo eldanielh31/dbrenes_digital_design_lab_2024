@@ -2,8 +2,8 @@ module main_aux(
 				input clock,
 				input reset,
 				input logic direction,
-				input logic moveH,
-				input logic moveV,
+				input logic move_h,
+				input logic move_v,
 				input logic fire,
 				output [7:0] red,
 				output [7:0] green,
@@ -20,9 +20,12 @@ module main_aux(
 	logic [4:0] col;
 
 	logic hit;
-	logic state[7:0];
-
-	get_player_pos(
+	logic [7:0] state;
+	
+	controls controls_inst(
+		.direction(direction),
+		.move_h(move_h),
+		.move_v(move_v),
 		.matrix_pc(matrix_pc),
 		.row(row),
 		.col(col)

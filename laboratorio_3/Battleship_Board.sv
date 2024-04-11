@@ -51,5 +51,6 @@ module Battleship_Board(
             state <= board[row][col]; // Actualizar el estado de la celda
         end
     end
+	 
 
 endmodule
