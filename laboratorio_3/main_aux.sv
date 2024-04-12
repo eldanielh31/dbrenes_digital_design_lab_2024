@@ -5,7 +5,8 @@ module main_aux(
 				input logic move_h,
 				input logic move_v,
 				input logic fire,
-				input [2:0] amount_boats,
+				input logic [2:0] amount_boats,
+				output [6:0] segA,
 				output [7:0] red,
 				output [7:0] green,
 				output [7:0] blue,
@@ -23,15 +24,15 @@ module main_aux(
 
 	logic hit;
 	
-   wire start, // Señal de inicio para comenzar el juego
-	wire full_boat_placed, // Señal que indica si el jugador colocó un barco completo
-	wire time_expired, // Señal que indica si se agotó el límite de tiempo
-	wire boats_player,
-	wire boats_pc,
-	wire player_mov,
-	wire play,
-	wire win, // Señal que indica victoria
-	wire lose // Señal que indica derrota
+   wire start; // Señal de inicio para comenzar el juego
+	wire full_boat_placed; // Señal que indica si el jugador colocó un barco completo
+	wire time_expired; // Señal que indica si se agotó el límite de tiempo
+	wire boats_player;
+	wire boats_pc;
+	wire player_mov;
+	wire play;
+	wire win; // Señal que indica victoria
+	wire lose; // Señal que indica derrota
 	
 	Battleship_FSM Battleship_FSM_inst (
     .clk(clk),
@@ -47,13 +48,15 @@ module main_aux(
     .lose(lose)
   );
   
+  SieteSeg seg_inst(
+  .count(amount_boats),
+  .segA(segA));
+  
   boats boats_inst (
 	.amount_boats(amount_boats), 
 	.boats_placed(boats_player), 
 	.full_boat_placed(full_boat_placed)
   );
-  
-  
 	
 	
 //	controls controls_inst(
@@ -78,7 +81,7 @@ module main_aux(
 	controlador_vga controlador_vga_inst(
 				.clock(clock),
 				.reset(reset),
-				.matrix_pc(matrix_pc_2),
+				.matrix_pc(matrix_pc),
 				.matrix_player(matrix_player),
 				.red(red),
 				.green(green),
