@@ -5,6 +5,7 @@ module main_aux(
 				input logic move_h,
 				input logic move_v,
 				input logic fire,
+				input [2:0] amount_boats,
 				output [7:0] red,
 				output [7:0] green,
 				output [7:0] blue,
@@ -13,46 +14,72 @@ module main_aux(
 				output vsync,
 				output n_blank);
 
-	reg [1:0] matrix_player [0:4][0:4] = '{'{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}};				
-	reg [1:0] matrix_pc [0:4][0:4] = '{'{1, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}};				
+	reg [2:0] matrix_player [0:4][0:4] = '{'{0, 0, 0, 2, 0}, '{3, 3, 0, 1, 1}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}};
+   reg [2:0] matrix [0:4][0:4] = '{'{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b001, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}};
+   reg [2:0] matrix_pc [0:4][0:4];
 
 	logic [4:0] row;
 	logic [4:0] col;
 
 	logic hit;
-	logic [7:0] state;
 	
-	controls controls_inst(
-		.direction(direction),
-		.move_h(move_h),
-		.move_v(move_v),
-		.matrix_pc(matrix_pc),
-		.row(row),
-		.col(col)
-	);
-
-	Battleship_Board board(
-				.clk(clock),
-				.rst(reset),
-				.row(row),
-				.col(col),
-				.fire(fire),
-				.hit(hit),
-				.state(state)
-	);
+   wire start, // Señal de inicio para comenzar el juego
+	wire full_boat_placed, // Señal que indica si el jugador colocó un barco completo
+	wire time_expired, // Señal que indica si se agotó el límite de tiempo
+	wire boats_player,
+	wire boats_pc,
+	wire player_mov,
+	wire play,
+	wire win, // Señal que indica victoria
+	wire lose // Señal que indica derrota
 	
-	update_matrix_pc update(
-					.hit(hit), 
-					.fire(fire), 
-					.row(row), 
-					.col(col), 
-					.matrix_pc(matrix_pc));
+	Battleship_FSM Battleship_FSM_inst (
+    .clk(clk),
+    .rst(rst),
+    .start(start),
+    .full_boat_placed(full_boat_placed),
+    .time_expired(time_expired),
+    .boats_player(boats_player),
+    .boats_pc(boats_pc),
+    .player_mov(player_mov),
+    .play(play),
+    .win(win),
+    .lose(lose)
+  );
+  
+  boats boats_inst (
+	.amount_boats(amount_boats), 
+	.boats_placed(boats_player), 
+	.full_boat_placed(full_boat_placed)
+  );
+  
+  
+	
+	
+//	controls controls_inst(
+//		.direction(direction),
+//		.move_h(move_h),
+//		.move_v(move_v),
+//		.matrix_pc(matrix_pc),
+//		.row(row),
+//		.col(col)
+//	);
 
-
-	controlador_vga(
+//	Battleship_Board board(
+//				.clk(clock),
+//				.rst(reset),
+//				.row(row),
+//				.col(col),
+//				.fire(fire),
+//				.hit(hit),
+//				.matrix_pc(matrix_pc)
+//	);
+	
+	controlador_vga controlador_vga_inst(
 				.clock(clock),
 				.reset(reset),
-				.matrix_pc(matrix_pc),
+				.matrix_pc(matrix_pc_2),
+				.matrix_player(matrix_player),
 				.red(red),
 				.green(green),
 				.blue(blue),
@@ -61,7 +88,6 @@ module main_aux(
 				.vsync(vsync),
 				.n_blank(n_blank)
 	);
-
 
 
 endmodule 

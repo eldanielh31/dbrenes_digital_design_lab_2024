@@ -2,7 +2,7 @@ module generadorMatriz #(parameter ancho = 4'd5) (
     input [0:9] x,
     input [0:9] y,
     input reg [1:0] matrix_player [0:4][0:4], // Matriz 10x5
-	 input reg [1:0] matrix_pc [0:4][0:4], // Matriz 10x5
+	 input reg [2:0] matrix_pc [0:4][0:4], // Matriz 10x5
     output logic [7:0] red,
     output logic [7:0] green,
     output logic [7:0] blue
@@ -82,13 +82,17 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 					 end else if (matrix_player[i][j] == 2'd3) begin
 						caso_barco();
 					 end
-					 if (matrix_pc[i][j] == 2'd1) begin 
+					 if (matrix_pc[i][j] == 3'b001 || matrix_pc[i][j] == 3'd011) begin 
 						caso_seleccionado();
-					 end else if (matrix_pc[i][j] == 2'd2) begin 
+					 end else if (matrix_pc[i][j] == 3'b101) begin 
 						caso_destruido_pc();
-					 end else if (matrix_pc[i][j] == 2'd3) begin 
+					 end else if (matrix_pc[i][j] == 3'b100) begin 
 						caso_fallo_pc();
-					 end 
+					 end else begin
+						red = 8'b00000000;
+						green = 8'b00000000;
+						blue = 8'b00000000;
+					 end
 					 x0 = x0 + stepx; 
 				end
 				y0 = y0 + stepy;

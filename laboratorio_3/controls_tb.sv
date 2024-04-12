@@ -7,7 +7,7 @@ module controls_tb;
     logic direction;
     logic move_h;
     logic move_v;
-    logic [1:0] matrix_pc [0:4][0:4];
+    logic [2:0] matrix_pc [0:4][0:4];
 
     // Señales de salida
     logic [4:0] row;
@@ -30,7 +30,7 @@ module controls_tb;
         move_v = 1'b0;
         
         // Inicializar matriz
-        matrix_pc = '{'{0, 0, 0, 0, 0}, '{0, 0, 1, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}};
+        matrix_pc = '{'{0, 0, 0, 0, 0}, '{0, 1, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}};
         
         // Esperar un tiempo para que se resuelva la salida
         #TIME_PERIOD;
@@ -81,6 +81,12 @@ module controls_tb;
 
         // Verificar salida
         $display("After direction = 1, move_v = 1: row: %b, col: %b", row, col);
+		  
+		  direction = 1'b0;
+        move_h = 1'b0;
+        move_v = 1'b0;
+		  
+		  $display("After direction = 0, move_v = 0: row: %b, col: %b", row, col);
 
     end
 

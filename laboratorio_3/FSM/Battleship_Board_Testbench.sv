@@ -1,15 +1,18 @@
 module Battleship_Board_Testbench;
 
-    // Definición de señales
-    logic clk = 0;
-    logic rst = 0;
-    logic [3:0] row = 0;
-    logic [3:0] col = 0;
-    logic fire = 0;
-    logic hit;
-    logic [7:0] state;
+    // Parámetros para definir el tamaño del tablero
+    parameter ROWS = 5;
+    parameter COLS = 5;
 
-    // Instanciar el módulo a testear
+    // Definición de señales de entrada
+    logic clk, rst, fire;
+    logic [4:0] row, col;
+
+    // Definición de señales de salida
+    logic hit;
+    logic [2:0] matrix_pc [0:4][0:4];
+
+    // Instanciación del módulo bajo prueba
     Battleship_Board dut (
         .clk(clk),
         .rst(rst),
@@ -17,45 +20,39 @@ module Battleship_Board_Testbench;
         .col(col),
         .fire(fire),
         .hit(hit),
-        .state(state)
+        .matrix_pc(matrix_pc)
     );
 
-    // Generador de reloj
+    // Señal de clock
     always #5 clk = ~clk;
 
-    // Proceso de test
+    // Estímulo inicial
     initial begin
-        // Reset
+        clk = 0;
         rst = 1;
-        #10 rst = 0;
-
-        // Disparo a una celda sin barco
-        row = 2;
-        col = 3;
-        fire = 1;
-        #10;
         fire = 0;
-        $display("Disparo a la celda [%0d, %0d], Estado: %b, Golpe: %b", row, col, state, hit);
-
-        // Disparo a una celda con barco
         row = 0;
+        col = 0;
+        #40 rst = 0; // Desactivar el reset después de 10 unidades de tiempo
+		  matrix_pc = '{'{0, 0, 0, 0, 0}, '{0, 1, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}};
+
+        // Primer disparo
+        row = 1;
         col = 1;
-        fire = 1;
-        #10;
         fire = 0;
-        $display("Disparo a la celda [%0d, %0d], Estado: %b, Golpe: %b", row, col, state, hit);
+        #40;
 
-        // Disparo a una celda previamente disparada
-        row = 2;
+        // Segundo disparo
+        row = 1;
         col = 3;
-        fire = 1;
-        #10;
         fire = 0;
-        $display("Disparo a la celda [%0d, %0d], Estado: %b, Golpe: %b", row, col, state, hit);
-
-        // Fin de la simulación
-        #10;
-        $finish;
+        #40;
+		  
+		  row = 2;
+		  col = 2;
+		  fire = 1;
+		  #40;
+  
     end
 
 endmodule

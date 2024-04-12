@@ -50,7 +50,7 @@ module update_matrix_tb;
         // Test Case 3: Disparo sin activación
         hit = 1'b0;
         fire = 1'b0;
-        row = 5'b11; // Por ejemplo
+        row = 5'b00; // Por ejemplo
         col = 5'b00; // Por ejemplo
         #TIME_PERIOD ;
         // Verificar resultado
