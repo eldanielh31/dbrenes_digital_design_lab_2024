@@ -3,6 +3,8 @@ module generadorMatriz #(parameter ancho = 4'd5) (
     input [0:9] y,
     input reg [1:0] matrix_player [0:4][0:4], // Matriz 10x5
 	 input reg [2:0] matrix_pc [0:4][0:4], // Matriz 10x5
+	 //input logic win,
+	 input logic lose,
     output logic [7:0] red,
     output logic [7:0] green,
     output logic [7:0] blue
@@ -12,6 +14,7 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 	 logic color_azul;
 	 logic color_rojo;
 	 logic color_verde;
+	 logic color_celeste;
 	 logic gano;
     logic [0:9] stepx;
     logic [0:9] stepy;
@@ -21,13 +24,16 @@ module generadorMatriz #(parameter ancho = 4'd5) (
     logic [0:9] j;
 	 logic [0:4] ajuste_x;
 	 logic [0:4] ajuste_y;
-
+	 logic win;
+	 
     always_comb begin
         color_blanco = 0;
 		  color_azul = 0;
 		  color_rojo = 0;
 		  color_verde = 0;
-		  gano = 0;
+		  color_celeste = 0;
+		  win = 0;
+		  
 		  
         i = 0;
         j = 0;
@@ -39,10 +45,13 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 		  
 		  ajuste_x = 30;
 		  ajuste_y = 29;
-		  
-		  if (gano) begin 
-				caso_turno_player();
+		  win = 1;
+		  if (win) begin 
+				caso_win();
 		  end
+		  //else if (lose) begin
+				//caso_lose();
+		  //end
 			else begin
         for (i = 0; i < 10; i = i + 1) begin // Cambiar el límite a 10 para tener 10 columnas
 				x0 = stepx / 10'd2 + ancho / 10'd2;
@@ -116,6 +125,10 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 				red = 8'b00000000;
             green = 8'b11111111;
             blue = 8'b00000000;
+		  end else if (color_celeste)begin
+				red = 8'b01100110;
+				green = 8'b10010100;
+				blue = 8'b11011000;
 		  end else begin
             red = 8'b00000000;
             green = 8'b00000000;
@@ -136,7 +149,7 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 		end 
 		
 		// Se dibuja una L
-		 else if ((x == 250) && (y > 210) && (y < 270)) begin
+		 if ((x == 250) && (y > 210) && (y < 270)) begin
 
 			  red =   8'b11111111;
 			  green = 8'b11111111;
@@ -145,7 +158,7 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 		 end 
 		 
 		// Se dibuja una A
-		 else if (((x == 270 || x == 300) && (y > 210) && (y < 270)) ||
+		 if (((x == 270 || x == 300) && (y > 210) && (y < 270)) ||
 			  ((x == 270 || x == 295) && (y > 240) && (y < 270)) ||
 			  ((x > 270 && x < 300) && (y == 210 || y == 240))) begin
 
@@ -155,7 +168,7 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 		
 		end
 		//Se dibuja una Y
-		else if ((x == 325) && (y > 230) && (y < 270)
+		if ((x == 325) && (y > 230) && (y < 270)
 		
 		|| ((x > 306 && x < 309) && (y == 212))
 		|| ((x > 308 && x < 311) && (y == 214))	
@@ -187,7 +200,7 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 		end
 		
 		//Se dibuja una E
-		else if (((x == 350)  && (y > 210)  && (y < 270)) 
+		if (((x == 350)  && (y > 210)  && (y < 270)) 
 					|| ((x > 350 && x < 380) && (y == 210 || y == 240 || y == 270 ))) begin
 							
 				red =   8'b11111111;
@@ -196,7 +209,7 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 		end 
 		
 		//Se dibuja una R
-		else if ( ((x == 395 || x == 425) && (y > 210)  && (y < 240)) 
+		if ( ((x == 395 || x == 425) && (y > 210)  && (y < 240)) 
 					|| ((x == 395 || x == 420) && (y > 240)  && (y < 270))
 					|| ((x > 395 && x < 425)   && (y == 210 || y == 240))) begin 
 		
@@ -230,7 +243,7 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 	 function void caso_seleccionado();
 		if (x >= x0 - ajuste_x + 320 && x < x0 - ajuste_x + 317 + stepx && y >= y0 + ajuste_y && y < y0 + ajuste_y + stepy) begin
 					
-				color_blanco = 1;
+				color_celeste = 1;
 		end 
 	endfunction
 		
@@ -258,6 +271,57 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 		end 
 	 
 	 endfunction
+	 
+	 function void caso_win();
+	 
+		if (((x == 450 || x == 465 || x == 480) && (y > 210) && (y < 270))
+        || ((x == 455 || x == 470) && (y > 240) && (y < 270))
+        || ((x == 460) && (y > 210) && (y < 240))
+        || ((x == 475) && (y > 240) && (y < 270))
+        || ((x > 450 && x < 455) && (y == 210 || y == 240 || y == 270))
+        || ((x > 460 && x < 465) && (y == 210 || y == 240 || y == 270))
+        || ((x > 465 && x < 470) && (y == 210 || y == 240 || y == 270))
+        || ((x > 470 && x < 475) && (y == 210 || y == 240 || y == 270))
+        || ((x > 475 && x < 480) && (y == 210 || y == 240 || y == 270))) begin
+		
+			color_blanco = 1;
+		end
+	 
+//		// Se dibuja una L
+//		 if ((x == 350) && (y > 210) && (y < 270)) begin
+//
+//			  color_blanco = 1;
+//
+//		 end 
+//		 
+//		 if (((x == 370 || x == 400)  && (y > 210) && (y < 270)) 
+//					
+//					|| ((x > 370 && x < 372) && (y == 212))
+//					|| ((x > 371 && x < 374) && (y == 214))
+//					|| ((x > 373 && x < 376) && (y == 216))
+//					|| ((x > 375 && x < 378) && (y == 218))
+//					|| ((x > 377 && x < 380) && (y == 220))
+//					|| ((x > 379 && x < 382) && (y == 222))
+//					|| ((x > 381 && x < 384) && (y == 224))
+//					|| ((x > 383 && x < 386) && (y == 226))
+//					|| ((x > 385 && x < 388) && (y == 228))
+//					|| ((x > 387 && x < 390) && (y == 230))
+//					|| ((x > 389 && x < 392) && (y == 232))
+//					|| ((x > 391 && x < 394) && (y == 234)) 
+//					|| ((x > 393 && x < 396) && (y == 236))
+//					|| ((x > 395 && x < 398) && (y == 238))
+//					|| ((x > 397 && x < 400) && (y == 240))) begin
+//					
+//				color_blanco = 1;
+//		end 
+		else begin 
+			red = 8'd00000000;
+			green = 8'd00000000;
+			blue = 8'd00000000;
+		end
+	 endfunction
+	 
+	 
 endmodule
 
 

@@ -30,7 +30,7 @@ module controls_tb;
         move_v = 1'b0;
         
         // Inicializar matriz
-        matrix_pc = '{'{0, 0, 0, 0, 0}, '{0, 1, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}};
+        matrix_pc = '{'{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b001, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}};
         
         // Esperar un tiempo para que se resuelva la salida
         #TIME_PERIOD;
@@ -39,15 +39,15 @@ module controls_tb;
         $display("Initial row: %b, col: %b", row, col);
         
         // Cambiar valores de entrada para probar diferentes casos
-        direction = 1'b1;
-        move_h = 1'b1;
+        direction = 1'b0;
+        move_h = 1'b0;
         move_v = 1'b0;
 
         // Esperar un tiempo para que se resuelva la salida
         #TIME_PERIOD;
 
         // Verificar salida
-        $display("After direction = 1, move_h = 1: row: %b, col: %b", row, col);
+        $display("After direction = 1, move_h = 0: row: %b, col: %b", row, col);
         
         // Cambiar valores de entrada para probar diferentes casos
         direction = 1'b0;

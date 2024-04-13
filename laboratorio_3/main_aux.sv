@@ -16,8 +16,8 @@ module main_aux(
 				output n_blank);
 
 	reg [2:0] matrix_player [0:4][0:4] = '{'{0, 0, 0, 2, 0}, '{3, 3, 0, 1, 1}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}};
-   reg [2:0] matrix [0:4][0:4] = '{'{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b001, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}};
-   reg [2:0] matrix_pc [0:4][0:4];
+	reg [2:0] matrix [0:4][0:4];
+   wire [2:0] matrix_pc [0:4][0:4] ;//= '{'{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b001, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}};
 
 	logic [4:0] row;
 	logic [4:0] col;
@@ -50,39 +50,23 @@ module main_aux(
   
   SieteSeg seg_inst(
   .count(amount_boats),
-  .segA(segA));
+  .segA(segA)
+  );
   
   boats boats_inst (
 	.amount_boats(amount_boats), 
 	.boats_placed(boats_player), 
 	.full_boat_placed(full_boat_placed)
   );
-	
-	
-//	controls controls_inst(
-//		.direction(direction),
-//		.move_h(move_h),
-//		.move_v(move_v),
-//		.matrix_pc(matrix_pc),
-//		.row(row),
-//		.col(col)
-//	);
 
-//	Battleship_Board board(
-//				.clk(clock),
-//				.rst(reset),
-//				.row(row),
-//				.col(col),
-//				.fire(fire),
-//				.hit(hit),
-//				.matrix_pc(matrix_pc)
-//	);
 	
 	controlador_vga controlador_vga_inst(
 				.clock(clock),
 				.reset(reset),
 				.matrix_pc(matrix_pc),
 				.matrix_player(matrix_player),
+				//.win(win),
+				.lose(lose),
 				.red(red),
 				.green(green),
 				.blue(blue),
