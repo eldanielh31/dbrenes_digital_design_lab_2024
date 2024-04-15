@@ -16,13 +16,16 @@ module main_aux(
 				output n_blank);
 
 	reg [2:0] matrix_player [0:4][0:4] = '{'{0, 0, 0, 2, 0}, '{3, 3, 0, 1, 1}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}};
+   reg [2:0] matrix_pc [0:4][0:4] = '{'{3'b001, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}};
 	reg [2:0] matrix [0:4][0:4];
-   wire [2:0] matrix_pc [0:4][0:4] ;//= '{'{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b001, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}};
+	
+	reg [4:0] actual_row;
+	reg [4:0] actual_col;
+	
+	wire logic [4:0] row;
+	wire logic [4:0] col;
 
-	logic [4:0] row;
-	logic [4:0] col;
-
-	logic hit;
+	logic hit = 1;
 	
    wire start; // Señal de inicio para comenzar el juego
 	wire full_boat_placed; // Señal que indica si el jugador colocó un barco completo
@@ -58,14 +61,35 @@ module main_aux(
 	.boats_placed(boats_player), 
 	.full_boat_placed(full_boat_placed)
   );
-
+  
+  move move_inst (
+	 .move_h(move_h),
+	 .move_v(move_v),
+	 .actual_row(actual_row),
+	 .actual_col(actual_col),
+	 .direction(direction),
+	 .row(row),
+	 .col(col)  
+  );
+  
+	 
+  update_matrix_pc update_inst (
+    .row(row),
+    .col(col),
+	 .clock(clock),
+	 .reset(reset),
+    .matrix_pc(matrix_pc),
+	 .matrix(matrix),
+	 .actual_row(actual_row),
+	 .actual_col(actual_col)
+	);
 	
 	controlador_vga controlador_vga_inst(
 				.clock(clock),
 				.reset(reset),
-				.matrix_pc(matrix_pc),
+				.matrix_pc(matrix),
 				.matrix_player(matrix_player),
-				//.win(win),
+				.win(win),
 				.lose(lose),
 				.red(red),
 				.green(green),
@@ -75,6 +99,8 @@ module main_aux(
 				.vsync(vsync),
 				.n_blank(n_blank)
 	);
+	
+	
 
 
 endmodule 

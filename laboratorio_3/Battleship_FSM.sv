@@ -42,9 +42,7 @@ module Battleship_FSM (
         next_state_reg = full_boat_placed ? PLAY : START;
       end
       PLAY: begin
-		
 			next_state_reg = (time_expired || player_mov) ? PC : PLAY;
-			
 			
       end
       PC: begin
