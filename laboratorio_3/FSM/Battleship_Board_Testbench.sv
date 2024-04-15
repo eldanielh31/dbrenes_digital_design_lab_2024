@@ -1,61 +1,56 @@
 module Battleship_Board_Testbench;
 
-    // Definición de señales
-    logic clk = 0;
-    logic rst = 0;
-    logic [3:0] row = 0;
-    logic [3:0] col = 0;
-    logic fire = 0;
-    logic hit;
-    logic [7:0] state;
+    // Parámetros del testbench
+    reg clk;
+    reg ship_assign;
+    reg shoot;
+    wire [49:0] board;
 
-    // Instanciar el módulo a testear
-    Battleship_Board dut (
-        .clk(clk),
-        .rst(rst),
-        .row(row),
-        .col(col),
-        .fire(fire),
-        .hit(hit),
-        .state(state)
-    );
+    // Generación de transacciones aleatorias
+    reg [2:0] row;
+    reg [2:0] col;
+	 
+	     // Instancia del módulo bajo prueba
+    Battleship_Board dut (row, col, ship_assign, shoot, board);
 
-    // Generador de reloj
-    always #5 clk = ~clk;
-
-    // Proceso de test
     initial begin
-        // Reset
-        rst = 1;
-        #10 rst = 0;
+        clk = 0;
+        ship_assign = 0;
+        shoot = 0;
 
-        // Disparo a una celda sin barco
-        row = 2;
-        col = 3;
-        fire = 1;
-        #10;
-        fire = 0;
-        $display("Disparo a la celda [%0d, %0d], Estado: %b, Golpe: %b", row, col, state, hit);
+			row = 4;
+			col = 4;
+			ship_assign = 0;
+			shoot = 1;
+			row = row % 5;
+			col = col % 5;
+			// Esperar un ciclo
+			#10;	
+			
+			row = 0;
+			col = 0;
+			ship_assign = 1;
+			shoot = 0;
+			row = row % 5;
+			col = col % 5;
+			// Esperar un ciclo
+			#10;	
+			
+			row = 3;
+			col = 2;
+			ship_assign = 0;
+			shoot = 1;
+			row = row % 5;
+			col = col % 5;
+			// Esperar un ciclo
+			#10;
 
-        // Disparo a una celda con barco
-        row = 0;
-        col = 1;
-        fire = 1;
-        #10;
-        fire = 0;
-        $display("Disparo a la celda [%0d, %0d], Estado: %b, Golpe: %b", row, col, state, hit);
-
-        // Disparo a una celda previamente disparada
-        row = 2;
-        col = 3;
-        fire = 1;
-        #10;
-        fire = 0;
-        $display("Disparo a la celda [%0d, %0d], Estado: %b, Golpe: %b", row, col, state, hit);
-
-        // Fin de la simulación
-        #10;
-        $finish;
+		  $finish;
     end
 
+    // Generar señal de reloj
+    always #5 clk = ~clk;
+
 endmodule
+
+
