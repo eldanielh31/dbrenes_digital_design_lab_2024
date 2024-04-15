@@ -3,6 +3,8 @@ module generadorMatriz #(parameter ancho = 4'd5) (
     input [0:9] y,
     input reg [1:0] matrix_player [0:4][0:4], // Matriz 5x5
 	 input reg [2:0] matrix_pc [0:4][0:4], // Matriz 5x5
+	 input reg [4:0] select_row,
+	 input reg [4:0] select_col,
 	 input logic win,
 	 input logic lose,
     output logic [7:0] red,
@@ -88,7 +90,7 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 					 end else if (matrix_player[i][j] == 2'd3) begin
 						caso_barco();
 					 end
-					 if (matrix_pc[i][j] == 3'b001 || matrix_pc[i][j] == 3'd011) begin 
+					 if (i == select_row && j == select_col) begin 
 						caso_seleccionado();
 					 end else if (matrix_pc[i][j] == 3'b101) begin 
 						caso_destruido_pc();

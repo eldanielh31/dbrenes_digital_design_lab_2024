@@ -12,7 +12,7 @@ module SieteSeg #(parameter N=3)(input reg [N-1:0] count,
 	  );
 	  
 	  always @(*) begin
-
+	  
 		 case (count)
 			3'b000: segA = 7'b1000000;
 			3'b001: segA = 7'b1111001;

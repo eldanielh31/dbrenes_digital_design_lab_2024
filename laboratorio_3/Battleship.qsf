@@ -39,7 +39,7 @@
 
 set_global_assignment -name FAMILY "Cyclone V"
 set_global_assignment -name DEVICE 5CSEMA5F31C6
-set_global_assignment -name TOP_LEVEL_ENTITY main_aux_tb
+set_global_assignment -name TOP_LEVEL_ENTITY main
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 20.1.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "20:30:09  MARCH 24, 2024"
 set_global_assignment -name LAST_QUARTUS_VERSION "20.1.0 Lite Edition"
@@ -89,14 +89,11 @@ set_global_assignment -name SYSTEMVERILOG_FILE contador_parametrizable.sv
 set_global_assignment -name SYSTEMVERILOG_FILE contador_horizontal.sv
 set_global_assignment -name SYSTEMVERILOG_FILE comparador_mayor.sv
 set_global_assignment -name SYSTEMVERILOG_FILE comparador_igual.sv
-set_global_assignment -name SYSTEMVERILOG_FILE controls.sv
 set_global_assignment -name SYSTEMVERILOG_FILE Battleship_FSM.sv
 set_global_assignment -name SYSTEMVERILOG_FILE Battleship_Board.sv
 set_global_assignment -name SYSTEMVERILOG_FILE main_aux.sv
-set_global_assignment -name SYSTEMVERILOG_FILE update_matrix_pc.sv
 set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (SystemVerilog)"
 set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "SYSTEMVERILOG HDL" -section_id eda_simulation
-set_global_assignment -name SYSTEMVERILOG_FILE controls_tb.sv
 set_location_assignment PIN_Y16 -to move_h
 set_location_assignment PIN_W15 -to move_v
 set_location_assignment PIN_AC12 -to fire
@@ -118,13 +115,13 @@ set_location_assignment PIN_AH28 -to segA[6]
 set_location_assignment PIN_AF9 -to amount_boats[0]
 set_location_assignment PIN_AF10 -to amount_boats[1]
 set_location_assignment PIN_AD11 -to amount_boats[2]
-set_global_assignment -name SYSTEMVERILOG_FILE update_matrix_pc_tb.sv
 set_global_assignment -name EDA_TEST_BENCH_NAME update_matrix_pc_tb -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id update_matrix_pc_tb
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME update_matrix_pc_tb -section_id update_matrix_pc_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE update_matrix_pc_tb.sv -section_id update_matrix_pc_tb
 set_global_assignment -name SYSTEMVERILOG_FILE move.sv
-set_global_assignment -name SYSTEMVERILOG_FILE main_aux_tb.sv
+set_global_assignment -name SYSTEMVERILOG_FILE move_tb.sv
+set_global_assignment -name SYSTEMVERILOG_FILE update_row_col.sv
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top

@@ -16,18 +16,14 @@ module main_aux(
 				output n_blank);
 
 	reg [2:0] matrix_player [0:4][0:4] = '{'{0, 0, 0, 2, 0}, '{3, 3, 0, 1, 1}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}};
-   reg [2:0] matrix_pc [0:4][0:4] = '{'{3'b001, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}};
-	reg [2:0] matrix [0:4][0:4];
+   reg [2:0] matrix_pc [0:4][0:4] = '{'{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}};
 	
-	reg [4:0] actual_row;
-	reg [4:0] actual_col;
+	reg [4:0] select_row;
+	reg [4:0] select_col;
 	
-	wire logic [4:0] row;
-	wire logic [4:0] col;
+	reg [4:0] current_row = 1;
+	reg [4:0] current_col = 1;
 	
-	wire logic moved;
-
-	logic hit = 1;
 	
    wire start; // Señal de inicio para comenzar el juego
 	wire full_boat_placed; // Señal que indica si el jugador colocó un barco completo
@@ -62,49 +58,32 @@ module main_aux(
 	.amount_boats(amount_boats), 
 	.boats_placed(boats_player), 
 	.full_boat_placed(full_boat_placed)
-  );
+  ); 
   
-  move move_inst (
+    move move_inst (
 	 .move_h(move_h),
 	 .move_v(move_v),
-	 .clock(clock),
-	 .reset(reset),
-	 .actual_row(actual_row),
-	 .actual_col(actual_col),
 	 .direction(direction),
-	 .row(row),
-	 .col(col),
-  );
-
-  Battleship_Board board_inst (
-        .clk(clk),
-        .rst(rst),
-        .row(row),
-        .col(col),
-        .fire(fire),
-        .hit(hit),
-        .state(state)
-    );
-  
-	 
-  update_matrix_pc update_inst (
-    .row(row),
-    .col(col),
 	 .clock(clock),
 	 .reset(reset),
-    .matrix_pc(matrix_pc),
-	 .matrix(matrix),
-	 .actual_row(actual_row),
-	 .actual_col(actual_col),
-	);
-	
+	 .current_row(current_row),
+	 .current_col(current_col),
+	 .select_row(select_row),
+	 .select_col(select_col)  
+  );
+  
+  assign current_row = select_row;
+  assign current_col = select_col;
+  
 	controlador_vga controlador_vga_inst(
 				.clock(clock),
 				.reset(reset),
-				.matrix_pc(matrix),
+				.matrix_pc(matrix_pc),
 				.matrix_player(matrix_player),
 				.win(win),
 				.lose(lose),
+				.select_row(select_row),
+				.select_col(select_col),
 				.red(red),
 				.green(green),
 				.blue(blue),
@@ -113,7 +92,7 @@ module main_aux(
 				.vsync(vsync),
 				.n_blank(n_blank)
 	);
-	
+  
 	
 
 
