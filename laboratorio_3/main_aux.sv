@@ -24,6 +24,8 @@ module main_aux(
 	
 	wire logic [4:0] row;
 	wire logic [4:0] col;
+	
+	wire logic moved;
 
 	logic hit = 1;
 	
@@ -65,12 +67,24 @@ module main_aux(
   move move_inst (
 	 .move_h(move_h),
 	 .move_v(move_v),
+	 .clock(clock),
+	 .reset(reset),
 	 .actual_row(actual_row),
 	 .actual_col(actual_col),
 	 .direction(direction),
 	 .row(row),
-	 .col(col)  
+	 .col(col),
   );
+
+  Battleship_Board board_inst (
+        .clk(clk),
+        .rst(rst),
+        .row(row),
+        .col(col),
+        .fire(fire),
+        .hit(hit),
+        .state(state)
+    );
   
 	 
   update_matrix_pc update_inst (
@@ -81,7 +95,7 @@ module main_aux(
     .matrix_pc(matrix_pc),
 	 .matrix(matrix),
 	 .actual_row(actual_row),
-	 .actual_col(actual_col)
+	 .actual_col(actual_col),
 	);
 	
 	controlador_vga controlador_vga_inst(

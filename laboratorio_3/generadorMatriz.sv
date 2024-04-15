@@ -1,8 +1,8 @@
 module generadorMatriz #(parameter ancho = 4'd5) (
     input [0:9] x,
     input [0:9] y,
-    input reg [1:0] matrix_player [0:4][0:4], // Matriz 10x5
-	 input reg [2:0] matrix_pc [0:4][0:4], // Matriz 10x5
+    input reg [1:0] matrix_player [0:4][0:4], // Matriz 5x5
+	 input reg [2:0] matrix_pc [0:4][0:4], // Matriz 5x5
 	 input logic win,
 	 input logic lose,
     output logic [7:0] red,

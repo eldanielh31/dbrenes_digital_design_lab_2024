@@ -6,18 +6,8 @@ module update_matrix_pc(
     input logic [2:0] matrix_pc [0:4][0:4],
 	 output logic [2:0] matrix [0:4][0:4],
 	 output reg [4:0] actual_row,
-	 output reg [4:0] actual_col  
+	 output reg [4:0] actual_col 
 );
-	always @(posedge clock) begin
-        if (reset) begin
-            actual_row <= 0;
-            actual_col <= 0;
-        end else begin
-                actual_row <= row;
-                actual_col <= col;
-            
-        end
-    end
 	 
     always_comb begin 
 	 
@@ -37,7 +27,16 @@ module update_matrix_pc(
 	 end
 	 
 	   
-	 
+	 always @(posedge clock or posedge reset) begin
+        if (reset) begin
+            actual_row = 0;
+            actual_col = 0;
+        end else begin
+
+                actual_row = row;
+                actual_col = col;
+   
+    end
     
 	 
 endmodule

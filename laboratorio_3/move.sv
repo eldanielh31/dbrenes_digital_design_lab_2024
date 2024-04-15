@@ -5,10 +5,11 @@ module move(
 	output [4:0] actual_row, 
 	output [4:0] actual_col, 
 	output [4:0] row, 
-	output [4:0] col
+	output [4:0] col,
+	output logic moved
 );
 	
-	always_comb begin
+	always() begin
 		row = 0;
 		col = 0;
 		if (!move_h && direction && col < 5) begin
