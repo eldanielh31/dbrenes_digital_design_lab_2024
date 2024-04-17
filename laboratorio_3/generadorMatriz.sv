@@ -3,6 +3,8 @@ module generadorMatriz #(parameter ancho = 4'd5) (
     input [0:9] y,
     input reg [1:0] matrix_player [0:4][0:4], // Matriz 5x5
 	 input reg [2:0] matrix_pc [0:4][0:4], // Matriz 5x5
+	 input [49:0] array_player,
+	 input [49:0] array_pc,
 	 input reg [4:0] select_row,
 	 input reg [4:0] select_col,
 	 input logic win,
@@ -27,12 +29,15 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 	 logic [0:4] ajuste_x;
 	 logic [0:4] ajuste_y;
 	 
+	 int index;
+	 
     always_comb begin
         color_blanco = 0;
 		  color_azul = 0;
 		  color_rojo = 0;
 		  color_verde = 0;
 		  color_celeste = 0;
+		  index = 0;
 		    
         i = 0;
         j = 0;
@@ -82,21 +87,38 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 		  for (i = 0;i < 5;i = i + 1)begin
 				x0 = stepx / 10'd2 + ancho / 10'd2;
 				for(j=0;j < 5;j= j + 1)begin 
-					if (matrix_player[i][j] == 2'd1) begin
-                    caso_destruido_player();
-                end 
-					 else if (matrix_player[i][j] == 2'd2) begin
+				
+					index = (i * 10) + (j * 2);
+					
+					if (array_player[index] == 1 && array_player[index + 1] == 1) begin
+						caso_destruido_player();
+					end else if (array_player[index] == 1 && array_player[index + 1] == 0) begin 
 						caso_fallo_player();
-					 end else if (matrix_player[i][j] == 2'd3) begin
+					end else if (array_player[index] == 0 && array_player[index + 1] == 1) begin
 						caso_barco();
-					 end
-					 if (i == select_row && j == select_col) begin 
+					end
+					if (i == select_row && j == select_col) begin 
 						caso_seleccionado();
-					 end else if (matrix_pc[i][j] == 3'b101) begin 
+					end else if (array_pc[index] == 1 && array_pc[index + 1] == 1) begin
 						caso_destruido_pc();
-					 end else if (matrix_pc[i][j] == 3'b100) begin 
+					end else if (array_pc[index] == 1 && array_pc[index + 1] == 0) begin 
 						caso_fallo_pc();
-					 end else begin
+					end 
+//					if (matrix[i][j] == 2'd1) begin
+//                    caso_destruido_player();
+//                end 
+//					 else if (matrix_player[i][j] == 2'd2) begin
+//						caso_fallo_player();
+//					 end else if (matrix_player[i][j] == 2'd3) begin
+//						caso_barco();
+//					 end
+//					 if (i == select_row && j == select_col) begin 
+//						caso_seleccionado();
+//					 end else if (matrix_pc[i][j] == 3'b101) begin 
+//						caso_destruido_pc();
+//					 end else if (matrix_pc[i][j] == 3'b100) begin 
+//						caso_fallo_pc();
+					 else begin
 						red = 8'b00000000;
 						green = 8'b00000000;
 						blue = 8'b00000000;

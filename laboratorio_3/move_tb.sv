@@ -28,13 +28,13 @@ module move_tb;
         .select_col(select_col)
     );
 	 
-//    update_row_col update_inst (
-//		.clock(clock),
-//		.current_row(current_row),
-//		.current_col(current_col),
-//      .select_row(select_row),
-//      .select_col(select_col)
-//	 );
+    update_row_col update_inst (
+		.clock(clock),
+		.current_row(current_row),
+		.current_col(current_col),
+      .select_row(select_row),
+      .select_col(select_col)
+	 );
     // Generación de señales de reloj
     always #((CLK_PERIOD / 2)) clock = !clock;
     

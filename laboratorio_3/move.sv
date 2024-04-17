@@ -18,8 +18,9 @@ always @(posedge clock or posedge reset) begin
 	 else begin
 		 if (!move_h && direction && current_col < 4) begin
 			  // Incrementar select_col cuando move_h es 0 y direction es 1
-			  select_col <= current_col + 1;
-			  select_row <= current_row;
+			  select_col <= select_col + 1;
+			  select_row <= select_row;
+			 
 		 end
 		 else if (!move_h && !direction && current_col > 0) begin
 			  // Incrementar select_col cuando move_h es 0 y direction es 1

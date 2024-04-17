@@ -15,8 +15,10 @@ module main_aux(
 				output vsync,
 				output n_blank);
 
-	reg [2:0] matrix_player [0:4][0:4] = '{'{0, 0, 0, 2, 0}, '{3, 3, 0, 1, 1}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}, '{0, 0, 0, 0, 0}};
-   reg [2:0] matrix_pc [0:4][0:4] = '{'{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}, '{3'b000, 3'b000, 3'b000, 3'b000, 3'b000}};
+	
+	reg [49:0] array_player = 50'b1110011001_1110011010_1110011011_1110011001_1110011011;
+	reg [49:0] array_pc;
+	
 	
 	reg [4:0] select_row;
 	reg [4:0] select_col;
@@ -24,14 +26,13 @@ module main_aux(
 	reg [4:0] current_row = 1;
 	reg [4:0] current_col = 1;
 	
-	
    wire start; // Señal de inicio para comenzar el juego
 	wire full_boat_placed; // Señal que indica si el jugador colocó un barco completo
 	wire time_expired; // Señal que indica si se agotó el límite de tiempo
-	wire boats_player;
-	wire boats_pc;
-	wire player_mov;
-	wire play;
+	wire boats_player; // Barcos restantes del jugador
+	wire boats_pc; // Barcos restantes de la maquina
+	wire player_mov; // Condicion que indica si el jugador se movio 
+	wire play; 
 	wire win; // Señal que indica victoria
 	wire lose; // Señal que indica derrota
 	
@@ -69,7 +70,7 @@ module main_aux(
 	 .current_row(current_row),
 	 .current_col(current_col),
 	 .select_row(select_row),
-	 .select_col(select_col)  
+	 .select_col(select_col),
   );
   
   assign current_row = select_row;
@@ -78,8 +79,8 @@ module main_aux(
 	controlador_vga controlador_vga_inst(
 				.clock(clock),
 				.reset(reset),
-				.matrix_pc(matrix_pc),
-				.matrix_player(matrix_player),
+				.array_player(array_player),
+				.array_pc(array_pc),
 				.win(win),
 				.lose(lose),
 				.select_row(select_row),
