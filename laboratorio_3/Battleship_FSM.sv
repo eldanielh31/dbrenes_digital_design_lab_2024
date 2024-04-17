@@ -47,8 +47,8 @@ module Battleship_FSM (
       end
       PC: begin
 			// JUEGA LA PC
-			next_state_reg = (boats_pc == 3'b0) ? WIN :
-								  (boats_player == 3'b0) ? LOSE :
+			next_state_reg = (boats_pc == 1'b0) ? WIN :
+								  (boats_player == 1'b0) ? LOSE :
 								  PLAY;
       end
       WIN, LOSE: begin
