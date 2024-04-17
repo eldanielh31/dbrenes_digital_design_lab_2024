@@ -20,11 +20,11 @@ module main_aux(
 	reg [49:0] array_pc;
 	
 	
-	reg [4:0] select_row;
-	reg [4:0] select_col;
+	reg [2:0] select_row;
+	reg [2:0] select_col;
 	
-	reg [4:0] current_row = 1;
-	reg [4:0] current_col = 1;
+	reg [2:0] current_row;
+	reg [2:0] current_col;
 	
    wire start; // Señal de inicio para comenzar el juego
 	wire full_boat_placed; // Señal que indica si el jugador colocó un barco completo
@@ -73,8 +73,18 @@ module main_aux(
 	 .select_col(select_col),
   );
   
-  assign current_row = select_row;
-  assign current_col = select_col;
+  update_row_col update_inst(
+    .clock(clock),
+	 .reset(reset),
+	 .current_row(current_row),
+	 .current_col(current_col),
+	 .select_row(select_row),
+	 .select_col(select_col),
+  
+  );
+  
+
+
   
 	controlador_vga controlador_vga_inst(
 				.clock(clock),

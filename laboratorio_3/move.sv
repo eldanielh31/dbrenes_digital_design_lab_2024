@@ -1,47 +1,52 @@
 module move(
     input clock,
-	 input reset,
+    input reset,
     input wire move_h,
     input wire move_v,
     input wire direction,
-	 input reg [4:0] current_row,
-	 input reg [4:0] current_col,
-    output reg [4:0] select_row,
-    output reg [4:0] select_col
+    input reg [2:0] current_row,
+    input reg [2:0] current_col,
+    output reg [2:0] select_row,
+    output reg [2:0] select_col
 );
 
-always @(posedge clock or posedge reset) begin
-	 if (reset) begin
-		select_col <= 5'd0;
-		select_row <= 5'd0;
-	 end
-	 else begin
-		 if (!move_h && direction && current_col < 4) begin
-			  // Incrementar select_col cuando move_h es 0 y direction es 1
-			  select_col <= select_col + 1;
-			  select_row <= select_row;
-			 
-		 end
-		 else if (!move_h && !direction && current_col > 0) begin
-			  // Incrementar select_col cuando move_h es 0 y direction es 1
-			  select_col <= current_col - 1;
-			  select_row <= current_row;
-		 end
-		 else if (!move_v && direction && current_row > 0) begin
-			  // Incrementar select_row cuando move_v es 0 y direction es 0
-			  select_row <= current_row - 1;
-			  select_col <= current_col;
-		 end
-		 else if (!move_v && !direction && current_row < 4) begin
-			  // Incrementar select_row cuando move_v es 0 y direction es 0
-			  select_row <= current_row + 1;
-			  select_col <= current_col;
-		 end
-		 else if (move_h && move_v)begin
-			select_row <= current_row;
-			select_col <= current_col;
-		 end
-	 end
+reg move_h_state;
+reg move_h_state_prev;
+reg move_v_state;
+reg move_v_state_prev;
+
+always @(posedge clock) begin
+    move_h_state_prev <= move_h_state;
+    move_h_state <= move_h;
+
+    if (!reset && move_h_state && !move_h_state_prev) begin
+        if (direction && current_col < 4) begin
+            // Incrementar select_col cuando move_h es 1 y direction es 1
+            select_col <= current_col + 1;
+            select_row <= current_row;
+        end
+        else if (!direction && current_col > 0) begin
+            // Decrementar select_col cuando move_h es 1 y direction es 0
+            select_col <= current_col - 1;
+            select_row <= current_row;
+        end
+    end
+
+    move_v_state_prev <= move_v_state;
+    move_v_state <= move_v;
+
+    if (!reset && move_v_state && !move_v_state_prev) begin
+        if (direction && current_row > 0) begin
+            // Decrementar select_row cuando move_v es 1 y direction es 1
+            select_row <= current_row - 1;
+            select_col <= current_col;
+        end
+        else if (!direction && current_row < 4) begin
+            // Incrementar select_row cuando move_v es 1 y direction es 0
+            select_row <= current_row + 1;
+            select_col <= current_col;
+        end
+    end
 end
 
 endmodule
