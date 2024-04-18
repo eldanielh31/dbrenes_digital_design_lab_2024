@@ -104,20 +104,6 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 					end else if (array_pc[index] == 1 && array_pc[index + 1] == 0) begin 
 						caso_fallo_pc();
 					end 
-//					if (matrix[i][j] == 2'd1) begin
-//                    caso_destruido_player();
-//                end 
-//					 else if (matrix_player[i][j] == 2'd2) begin
-//						caso_fallo_player();
-//					 end else if (matrix_player[i][j] == 2'd3) begin
-//						caso_barco();
-//					 end
-//					 if (i == select_row && j == select_col) begin 
-//						caso_seleccionado();
-//					 end else if (matrix_pc[i][j] == 3'b101) begin 
-//						caso_destruido_pc();
-//					 end else if (matrix_pc[i][j] == 3'b100) begin 
-//						caso_fallo_pc();
 					 else begin
 						red = 8'b00000000;
 						green = 8'b00000000;

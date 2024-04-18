@@ -1,7 +1,7 @@
 module Battleship_Board (
     input logic [2:0] row,
     input logic [2:0] col,
-    input logic ship_assign, // 1: asignar barco, 0: disparar
+    input logic ship_assign, 
     input logic shoot,
     output logic [49:0] board, // 2 bits por celda para un tablero de 5x5
 	 output logic shootState,
