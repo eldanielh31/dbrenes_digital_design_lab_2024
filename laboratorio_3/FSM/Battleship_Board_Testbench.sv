@@ -20,7 +20,6 @@ module Battleship_Board_Testbench;
         .col(col),
         .fire(fire),
         .hit(hit),
-        .matrix_pc(matrix_pc)
     );
 
     // Señal de clock

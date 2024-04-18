@@ -1,55 +1,41 @@
-module Battleship_Board(
-    input logic clk,
-    input logic rst,
-    input logic [4:0] row,
-    input logic [4:0] col,
-    input logic fire,
-    output logic hit,
-    output logic [7:0] state
+module Battleship_Board (
+    input logic [2:0] row,
+    input logic [2:0] col,
+    input logic ship_assign, 
+    input logic shoot,
+    output logic [49:0] board, // 2 bits por celda para un tablero de 5x5
+	 output logic shootState,
+	 output logic [3:0]countBoat
 );
 
-    // Parámetros para definir el tamaño del tablero
-    parameter ROWS = 5;
-    parameter COLS = 5;
+    logic [49:0] board_internal; // Representación interna del tablero
+	 int index;
+	 logic [3:0]countBoat_internal;
 
-    // Declaración de variables internas
-    logic [7:0] board [0:ROWS-1][0:COLS-1]; // Matriz que representa el tablero
-    logic [7:0] cell_state; // Estado de la celda seleccionada
-
-    // Proceso de inicialización del tablero
+    // Valor inicial para el tablero
     initial begin
-        // Inicializar todas las celdas del tablero sin barcos y sin disparos
-        for (int i = 0; i < ROWS; i++) begin
-            for (int j = 0; j < COLS; j++) begin
-                board[i][j] = 8'b0000_0000; // Celda vacía (0000_0000)
-            end
+        board_internal = 50'b0; // Inicializar todas las celdas en 00
+		  countBoat_internal = 4'b0;
+    end
+
+    // Asignar barco o disparar
+    always @* begin
+        index = (row * 10) + (col * 2); // Calcular el índice basado en fila y columna
+
+        if (ship_assign) begin
+            board_internal[index] = 1'b1; // Asignar barco
+				countBoat_internal += 4'b1;
+        end 
+        else if (shoot) begin
+            board_internal[index + 1] = 1'b1; // Disparar
+				countBoat_internal -= board_internal[index] && board_internal[index + 1]? 4'b1 : 4'b0;
         end
     end
 
-    // Proceso de disparo y actualización del estado del tablero
-    always @(posedge clk or posedge rst) begin
-        if (rst) begin
-            // Reiniciar el tablero en caso de señal de reset
-            for (int i = 0; i < ROWS; i++) begin
-                for (int j = 0; j < COLS; j++) begin
-                    board[i][j] = 8'b0000_0000; // Celda vacía (0000_0000)
-                end
-            end
-            hit <= 1'b0;
-            state <= 8'b0000_0000;
-        end else if (fire) begin
-            cell_state = board[row][col];
-            if (cell_state[7:4] != 4'b0000) begin
-                // Si la celda contiene un barco
-                hit <= 1'b1;
-                board[row][col] = {4'b0000, cell_state[4:0]}; // Marcar el barco como impactado
-            end else begin
-                // Si la celda no contiene un barco
-                hit <= 1'b0;
-                board[row][col] = 8'b1000_0000; // Marcar la celda como disparada
-            end
-            state <= board[row][col]; // Actualizar el estado de la celda
-        end
-    end
+    // Salida del tablero
+    assign board = board_internal;
+	 assign shootState = board_internal[index] && board_internal[index + 1];
+	 assign countBoat = countBoat_internal;
 
 endmodule
+

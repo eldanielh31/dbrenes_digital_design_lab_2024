@@ -1,32 +1,52 @@
 module move(
-	input logic move_h, 
-	input logic move_v, 
-	input logic direction, 
-	output [4:0] actual_row, 
-	output [4:0] actual_col, 
-	output [4:0] row, 
-	output [4:0] col
+    input clock,
+    input reset,
+    input wire move_h,
+    input wire move_v,
+    input wire direction,
+    input reg [2:0] current_row,
+    input reg [2:0] current_col,
+    output reg [2:0] select_row,
+    output reg [2:0] select_col
 );
-	
-	always_comb begin
-		row = 0;
-		col = 0;
-		if (!move_h && direction && col < 5) begin
-			col = actual_col + 1;
-		end
-		 else if (!move_h && !direction && col > 0) begin
-			col = actual_col - 1;
-		end
-		
-		else if (!move_v && direction && row > 0) begin
-			row = actual_row - 1;
-		end
-		
-		else if (!move_v && !direction && row < 5) begin
-			row = actual_row + 1;
-		end
-	
-	
-	end
-	
-endmodule 
+
+reg move_h_state;
+reg move_h_state_prev;
+reg move_v_state;
+reg move_v_state_prev;
+
+always @(posedge clock) begin
+    move_h_state_prev <= move_h_state;
+    move_h_state <= move_h;
+
+    if (!reset && move_h_state && !move_h_state_prev) begin
+        if (direction && current_col < 4) begin
+            // Incrementar select_col cuando move_h es 1 y direction es 1
+            select_col <= current_col + 1;
+            select_row <= current_row;
+        end
+        else if (!direction && current_col > 0) begin
+            // Decrementar select_col cuando move_h es 1 y direction es 0
+            select_col <= current_col - 1;
+            select_row <= current_row;
+        end
+    end
+
+    move_v_state_prev <= move_v_state;
+    move_v_state <= move_v;
+
+    if (!reset && move_v_state && !move_v_state_prev) begin
+        if (direction && current_row > 0) begin
+            // Decrementar select_row cuando move_v es 1 y direction es 1
+            select_row <= current_row - 1;
+            select_col <= current_col;
+        end
+        else if (!direction && current_row < 4) begin
+            // Incrementar select_row cuando move_v es 1 y direction es 0
+            select_row <= current_row + 1;
+            select_col <= current_col;
+        end
+    end
+end
+
+endmodule
