@@ -28,29 +28,23 @@ module main_aux(
 	reg [2:0] current_row; // Fila actualmente seleccionada
 	reg [2:0] current_col; // Columna actualmente seleccionada
 	
-   wire start; // Señal de inicio para comenzar el juego
 	wire full_boat_placed; // Señal que indica si el jugador colocó un barco completo
 	wire time_expired; // Señal que indica si se agotó el límite de tiempo
 	reg [2:0] boats_player = 3'd3; // Barcos restantes del jugador
 	reg [2:0] boats_pc = 3'd2; // Barcos restantes de la maquina
 	wire player_mov; // Condicion que indica si el jugador se movio 
-	wire play; 
-	wire win; // Señal que indica victoria
-	wire lose; // Señal que indica derrota
+	wire pc_mov;
+	wire [2:0]state;
 	
 	// Maquina de estados de todo el juego
 	Battleship_FSM Battleship_FSM_inst (
     .clk(clk),
     .rst(rst),
-    .start(start),
     .full_boat_placed(full_boat_placed),
     .time_expired(time_expired),
-    //.boats_player(boats_player),
-    //.boats_pc(boats_pc),
     .player_mov(player_mov),
-    .play(play),
-    .win(win),
-    .lose(lose)
+    .pc_mov(pc_mov),
+    .state(state)
   );
   
   // Modulo del siete segmentos que muestra la cantidad de barcos
@@ -80,7 +74,7 @@ module main_aux(
 	 .current_row(current_row),
 	 .current_col(current_col),
 	 .select_row(select_row),
-	 .select_col(select_col),
+	 .select_col(select_col)
   );
   
   // Modulo para actualizar la fila y colunma actual
@@ -90,8 +84,7 @@ module main_aux(
 	 .current_row(current_row),
 	 .current_col(current_col),
 	 .select_row(select_row),
-	 .select_col(select_col),
-  
+	 .select_col(select_col)
   );
   
   // Modulo para simular el tablero de el jugador
@@ -100,7 +93,7 @@ module main_aux(
     .col(1),
     .ship_assign(1), // 1: asignar barco, 0: disparar
     .shoot(fire),
-    .board(array_player), // 2 bits por celda para un tablero de 5x5
+    .board(array_player) // 2 bits por celda para un tablero de 5x5
 	);
 	
 	// Modulo del controlador vga

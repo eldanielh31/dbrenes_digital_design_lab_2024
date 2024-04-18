@@ -1,15 +1,13 @@
 module Battleship_FSM (
   input wire clk, // Entrada de reloj
   input wire rst, // Entrada de reinicio
-  input wire start, // Señal de inicio para comenzar el juego
   input wire full_boat_placed, // Señal que indica si el jugador colocó un barco completo
   input wire time_expired, // Señal que indica si se agotó el límite de tiempo
   input wire boats_player,
   input wire boats_pc,
   input wire player_mov,
-  output wire play,
-  output wire win, // Señal que indica victoria
-  output wire lose // Señal que indica derrota
+  input wire pc_mov,
+  output logic [2:0]state
 );
 
   // Define estados
@@ -21,7 +19,7 @@ module Battleship_FSM (
     LOSE
   } state_t;
 
-  state_t current_state, next_state;
+  state_t current_state;
 
   // Registros para estado y próximo estado
   state_t state_reg, next_state_reg;
@@ -46,8 +44,8 @@ module Battleship_FSM (
 			
       end
       PC: begin
-			// JUEGA LA PC
-			next_state_reg = (boats_pc == 1'b0) ? WIN :
+			next_state_reg = 	!pc_mov ? PC :
+									(boats_pc == 1'b0) ? WIN :
 								  (boats_player == 1'b0) ? LOSE :
 								  PLAY;
       end
@@ -60,10 +58,7 @@ module Battleship_FSM (
 
   // Lógica de salida
   assign current_state = state_reg;
-  assign next_state = next_state_reg;
-  assign win = (current_state == WIN);
-  assign lose = (current_state == LOSE);
-  assign play = (current_state == PLAY);
+	assign state = current_state;
 
 endmodule
 
