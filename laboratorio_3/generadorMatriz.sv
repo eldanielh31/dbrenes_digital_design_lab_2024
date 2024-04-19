@@ -1,12 +1,13 @@
 module generadorMatriz #(parameter ancho = 4'd5) (
     input [0:9] x,
     input [0:9] y,
-    input reg [1:0] matrix_player [0:4][0:4], // Matriz 5x5
-	 input reg [2:0] matrix_pc [0:4][0:4], // Matriz 5x5
 	 input [49:0] array_player,
 	 input [49:0] array_pc,
 	 input reg [4:0] select_row,
 	 input reg [4:0] select_col,
+	 input reg [4:0] boat_row,
+	 input reg [4:0] boat_col,
+	 input logic [2:0] amount_boats,
 	 input logic win,
 	 input logic lose,
     output logic [7:0] red,
@@ -90,18 +91,30 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 				
 					index = (i * 10) + (j * 2);
 					
-					if (array_player[index] == 1 && array_player[index + 1] == 1) begin
+					if ((i == boat_row && j == boat_col) && amount_boats == 1) begin 
+						caso_barco();
+					end else if ((i == boat_row && j == boat_col || i == boat_row && j == boat_col + 1) && amount_boats == 2) begin
+						caso_barco();
+					end else if ((i == boat_row && j == boat_col || i == boat_row && j == boat_col + 1 || i == boat_row && j == boat_col + 2) && amount_boats == 3) begin
+						caso_barco();
+					end else if ((i == boat_row && j == boat_col || i == boat_row && j == boat_col + 1 || i == boat_row && j == boat_col + 2 || i == boat_row && j == boat_col + 3 ) && amount_boats == 4) begin
+						caso_barco();
+					end else if ((i == boat_row && j == boat_col || i == boat_row && j == boat_col + 1 || i == boat_row && j == boat_col + 2 || i == boat_row && j == boat_col + 3 || i == boat_row && j == boat_col + 4) && amount_boats == 5) begin
+						caso_barco();
+					end
+					
+					if (array_player[index] == 1'b1 && array_player[index + 1] == 1'b1) begin
 						caso_destruido_player();
-					end else if (array_player[index] == 1 && array_player[index + 1] == 0) begin 
+					end else if (array_player[index] == 1'b1 && array_player[index + 1] == 1'b0) begin 
 						caso_fallo_player();
-					end else if (array_player[index] == 0 && array_player[index + 1] == 1) begin
+					end else if (array_player[index] == 1'b0 && array_player[index + 1] == 1'b1) begin
 						caso_barco();
 					end
 					if (i == select_row && j == select_col) begin 
 						caso_seleccionado();
-					end else if (array_pc[index] == 1 && array_pc[index + 1] == 1) begin
+					end else if (array_pc[index] == 1'b1 && array_pc[index + 1] == 1'b1) begin
 						caso_destruido_pc();
-					end else if (array_pc[index] == 1 && array_pc[index + 1] == 0) begin 
+					end else if (array_pc[index] == 1'b1 && array_pc[index + 1] == 1'b0) begin 
 						caso_fallo_pc();
 					end 
 					 else begin

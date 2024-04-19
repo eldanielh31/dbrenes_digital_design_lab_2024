@@ -1,70 +1,65 @@
 module Battleship_Board_Testbench;
 
-    // Parámetros del testbench
-    reg clk;
-    reg ship_assign;
-    reg shoot;
-    wire [49:0] board;
+    // Parámetros del módulo
+    localparam ROW_SIZE = 3;
+    localparam COL_SIZE = 3;
+    localparam TOTAL_CELLS = ROW_SIZE * COL_SIZE;
 
-    // Generación de transacciones aleatorias
-    reg [2:0] row;
-    reg [2:0] col;
-	 reg [3:0] countBoat;
-	 
-	 reg shootState;
-	 
-	     // Instancia del módulo bajo prueba
-    Battleship_Board dut (row, col, ship_assign, shoot, board, shootState, countBoat);
+    // Señales de entrada
+    logic [2:0] row;
+    logic [2:0] col;
+    logic ship_assign;
+    logic shoot;
+    logic [2:0] state;
+    logic [2:0] amount_boats;
+    logic [2:0] current_boats;
 
+    // Señales de salida
+    logic [49:0] board;
+    logic shootState;
+    logic [2:0] countBoats;
+
+    // Instanciar el módulo bajo prueba
+    Battleship_Board dut (
+        .row(row),
+        .col(col),
+        .ship_assign(ship_assign),
+        .shoot(shoot),
+        .state(state),
+        .amount_boats(amount_boats),
+        .current_boats(current_boats),
+        .board(board),
+        .shootState(shootState),
+        .countBoats(countBoats)
+    );
+
+    // Generar estímulos
     initial begin
-        clk = 0;
-        ship_assign = 0;
-        shoot = 0;
-		  
-		  shootState = 0;
-		  countBoat = 3'b0;
+        // Caso de prueba 1: Asignación de barcos
+        row = 3'b001;
+        col = 3'b001;
+        ship_assign = 1'b1;
+        shoot = 1'b0;
+        state = 3'b000;
+        amount_boats = 3'b101;
+        current_boats = 3'b000;
+        #10;
 
-			row = 4;
-			col = 4;
-			ship_assign = 0;
-			shoot = 1;
-			row = row % 5;
-			col = col % 5;
-			// Esperar un ciclo
-			#10;	
-			
-			row = 0;
-			col = 0;
-			ship_assign = 1;
-			shoot = 0;
-			row = row % 5;
-			col = col % 5;
-			// Esperar un ciclo
-			#10;
-			
-			row = 3;
-			col = 2;
-			ship_assign = 1;
-			shoot = 0;
-			row = row % 5;
-			col = col % 5;
-			// Esperar un ciclo
-			#10;
-			
-			row = 3;
-			col = 2;
-			ship_assign = 0;
-			shoot = 1;
-			row = row % 5;
-			col = col % 5;
-			// Esperar un ciclo
-			#10;
-			$finish;
+        // Caso de prueba 2: Disparo
+        row = 3'b010;
+        col = 3'b010;
+        ship_assign = 1'b0;
+        shoot = 1'b1;
+        state = 3'b000;
+        amount_boats = 3'b101;
+        current_boats = 3'b001;
+        #10;
+
+        // Añadir más casos de prueba según sea necesario
+
+        // Finalizar simulación
+        $finish;
     end
 
-    // Generar señal de reloj
-    always #5 clk = ~clk;
-
 endmodule
-
 

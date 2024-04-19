@@ -39,10 +39,10 @@
 
 set_global_assignment -name FAMILY "Cyclone V"
 set_global_assignment -name DEVICE 5CSEMA5F31C6
-set_global_assignment -name TOP_LEVEL_ENTITY main_aux_tb
+set_global_assignment -name TOP_LEVEL_ENTITY main
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 20.1.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "20:30:09  MARCH 24, 2024"
-set_global_assignment -name LAST_QUARTUS_VERSION "20.1.1 Lite Edition"
+set_global_assignment -name LAST_QUARTUS_VERSION "20.1.0 Lite Edition"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name BOARD "DE1-SoC Board"
 set_location_assignment PIN_B11 -to hsync
@@ -115,7 +115,6 @@ set_global_assignment -name SYSTEMVERILOG_FILE main_aux_tb.sv
 set_global_assignment -name EDA_TEST_BENCH_NAME main_aux_tb -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id main_aux_tb
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME main_aux_tb -section_id main_aux_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE main_aux_tb.sv -section_id main_aux_tb
 set_global_assignment -name SYSTEMVERILOG_FILE place_boats.sv
 set_location_assignment PIN_AE26 -to segAmount[0]
 set_location_assignment PIN_AE27 -to segAmount[1]
@@ -138,9 +137,15 @@ set_location_assignment PIN_AB27 -to segPlayer[3]
 set_location_assignment PIN_AB26 -to segPlayer[4]
 set_location_assignment PIN_AA26 -to segPlayer[5]
 set_location_assignment PIN_AA25 -to segPlayer[6]
+set_global_assignment -name SYSTEMVERILOG_FILE TimerModule.sv
+set_global_assignment -name SYSTEMVERILOG_FILE update_boat_row_col.sv
+set_global_assignment -name SYSTEMVERILOG_FILE modify_amount_boats.sv
+
+set_global_assignment -name SYSTEMVERILOG_FILE update_current_boats.sv
+set_location_assignment PIN_AA15 -to place_boat
+set_global_assignment -name SYSTEMVERILOG_FILE PseudoRandomModule.sv
+set_global_assignment -name EDA_TEST_BENCH_FILE main_aux_tb.sv -section_id main_aux_tb
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
-set_global_assignment -name SYSTEMVERILOG_FILE PseudoRandomModule.sv
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
-set_global_assignment -name SYSTEMVERILOG_FILE TimerModule.sv
