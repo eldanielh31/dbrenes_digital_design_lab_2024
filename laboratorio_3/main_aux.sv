@@ -148,11 +148,14 @@ module main_aux(
   .rand_val1(shoot_row_pc), 
   .rand_val2(shoot_col_pc)
   );
+ 
   
   // Modulo para simular el tablero de el jugador
   Battleship_Board battleship_inst_player (
     .row(boat_row),
     .col(boat_col),
+	 .rand_row(shoot_row_pc),
+	 .rand_col(shoot_col_pc),
 	 .state(state),
     .ship_assign(place_boat), // 1: asignar barco, 0: disparar
 	 .amount_boats(amount_boats), 
@@ -161,6 +164,7 @@ module main_aux(
 	 .current_boats(current_boats),
 	 .clock(clock),
 	 .player_mov(0),
+	 .pc_mov(pc_mov),
 	 .reset(reset),
 	 .shoot(fire_pc)
 	);
@@ -169,14 +173,18 @@ module main_aux(
 	Battleship_Board battleship_inst_pc (
 		.row(select_row),
 		.col(select_col),
+		.rand_row(shoot_row_pc),
+		.rand_col(shoot_col_pc),
 		.state(state),
 		.amount_boats(amount_boats), 
+		.current_boats(boats_pc),
 		.board(array_pc),
 		.countBoats(boats_pc),
 		.clock(clock),
 	   .reset(reset),
 		.shoot(fire),
-		.player_mov(player_mov)
+		.player_mov(player_mov),
+		.pc_mov(0)
 	);
 	
 	assign led = fire;

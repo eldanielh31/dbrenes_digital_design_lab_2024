@@ -144,10 +144,6 @@ set_global_assignment -name SYSTEMVERILOG_FILE modify_amount_boats.sv
 set_global_assignment -name SYSTEMVERILOG_FILE update_current_boats.sv
 set_location_assignment PIN_AA15 -to place_boat
 set_global_assignment -name SYSTEMVERILOG_FILE PseudoRandomModule.sv
-set_global_assignment -name EDA_TEST_BENCH_FILE main_aux_tb.sv -section_id main_aux_tb
-set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
-set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
-set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name ENABLE_SIGNALTAP ON
 set_global_assignment -name USE_SIGNALTAP_FILE output_files/signal_tap_1.stp
 set_global_assignment -name SIGNALTAP_FILE output_files/signal_tap_1.stp
@@ -226,5 +222,14 @@ set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_ADVANCED_TRIGGER_
 set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_LEVEL_PIPELINE=1" -section_id auto_signaltap_0
 set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_ENABLE_ADVANCED_TRIGGER=0" -section_id auto_signaltap_0
 set_location_assignment PIN_V16 -to led
+set_global_assignment -name SYSTEMVERILOG_FILE main_testbench.sv
+set_global_assignment -name EDA_TEST_BENCH_NAME main_testbench -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id main_testbench
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME main_testbench -section_id main_testbench
+set_global_assignment -name EDA_TEST_BENCH_FILE main_aux_tb.sv -section_id main_aux_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE main_testbench.sv -section_id main_testbench
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name SLD_FILE db/signal_tap_1_auto_stripped.stp
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
