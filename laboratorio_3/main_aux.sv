@@ -5,8 +5,10 @@ module main_aux(
 				input logic move_h,
 				input logic move_v,
 				input logic fire,
+				input logic fire_pc,
 				input logic place_boat,
 				input logic [2:0] amount_boats,
+				output logic led,
 				output [6:0] segAmount,
 				output [6:0] segPlayer,
 				output [6:0] segPc,
@@ -34,20 +36,24 @@ module main_aux(
 	reg [2:0] current_row; // Fila actualmente seleccionada
 	reg [2:0] current_col; // Columna actualmente seleccionada
 	
+	reg [2:0] shoot_row_pc;
+	reg [2:0] shoot_col_pc;
+	
 	logic [2:0] amount_boats_out;
 	
-   reg start = 1; // Señal de inicio para comenzar el juego
-	wire full_boat_placed; // Señal que indica si el jugador colocó un barco completo
-	wire time_expired; // Señal que indica si se agotó el límite de tiempo
-	wire [2:0] boats_player; // Barcos restantes del jugador
-	wire [2:0] boats_pc; // Barcos restantes de la maquina
-	wire player_mov; // Condicion que indica si el jugador se movio 
-	wire state;
+	logic full_boat_placed; // Señal que indica si el jugador colocó un barco completo
+	logic time_expired; // Señal que indica si se agotó el límite de tiempo
+	logic [2:0] boats_player; // Barcos restantes del jugador
+	logic [2:0] boats_pc; // Barcos restantes de la maquina
+	logic player_mov; // Condicion que indica si el jugador se movio 
+	logic pc_mov;
+	logic [2:0] state;
 	
-	wire logic shootState;
-	wire logic [3:0] countBoat;
+	logic shootState;
+	logic [3:0] countBoat;
 	
-	wire logic [2:0] current_boats;
+	logic [2:0] current_boats;
+
 	
 	// Maquina de estados de todo el juego
 	Battleship_FSM uut (
@@ -72,7 +78,7 @@ module main_aux(
   SieteSeg seg_inst(
   .amount_boats(amount_boats_out),
   .boats_player(boats_player),
-  .boats_pc(boats_pc),
+  .boats_pc(state),
   .segAmount(segAmount),
   .segPlayer(segPlayer),
   .segPc(segPc)
@@ -82,6 +88,7 @@ module main_aux(
   boats boats_inst (
 	.amount_boats(amount_boats_out), 
 	.boats_placed(boats_player), 
+	.clock(clock),
 	.full_boat_placed(full_boat_placed)
   ); 
   
@@ -94,6 +101,7 @@ module main_aux(
     .direction(direction),
     .place_boat(place_boat),
     .amount_boats(amount_boats_out),
+	 .boats_player(boats_player),
     .current_boat_row(current_boat_row),
     .current_boat_col(current_boat_col),
     .boat_row(boat_row),
@@ -115,7 +123,6 @@ module main_aux(
 	 .move_h(move_h),
 	 .move_v(move_v),
 	 .direction(direction),
-	 .player_mov(player_mov),
 	 .clock(clock),
 	 .reset(reset),
 	 .current_row(current_row),
@@ -135,6 +142,13 @@ module main_aux(
   
   );
   
+  PseudoRandomModule random (
+  .clk(clock), 
+  .rst(reset), 
+  .rand_val1(shoot_row_pc), 
+  .rand_val2(shoot_col_pc)
+  );
+  
   // Modulo para simular el tablero de el jugador
   Battleship_Board battleship_inst_player (
     .row(boat_row),
@@ -144,9 +158,30 @@ module main_aux(
 	 .amount_boats(amount_boats), 
     .board(array_player), // 2 bits por celda para un tablero de 5x5
 	 .countBoats(boats_player),
-	 .current_boats(current_boats)
+	 .current_boats(current_boats),
+	 .clock(clock),
+	 .player_mov(0),
+	 .reset(reset),
+	 .shoot(fire_pc)
 	);
 	
+	//
+	Battleship_Board battleship_inst_pc (
+		.row(select_row),
+		.col(select_col),
+		.state(state),
+		.amount_boats(amount_boats), 
+		.board(array_pc),
+		.countBoats(boats_pc),
+		.clock(clock),
+	   .reset(reset),
+		.shoot(fire),
+		.player_mov(player_mov)
+	);
+	
+	assign led = fire;
+	
+	// modulo para actualizar la cantidad actula de barcos
 	update_current_boats current_boats_inst(
 		.clock(clock),
 		.reset(reset),
@@ -158,15 +193,15 @@ module main_aux(
 	controlador_vga controlador_vga_inst(
 				.clock(clock),
 				.reset(reset),
+				.state(state),
 				.array_player(array_player),
 				.array_pc(array_pc),
-				.win(win),
-				.lose(lose),
 				.select_row(select_row),
 				.select_col(select_col),
 				.boat_row(boat_row),
 				.boat_col(boat_col),
 				.amount_boats(amount_boats_out),
+				.boats_player(boats_player),
 				.red(red),
 				.green(green),
 				.blue(blue),

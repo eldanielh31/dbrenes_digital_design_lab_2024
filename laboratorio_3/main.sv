@@ -6,6 +6,7 @@ module main(input  clock,
 				input logic fire,
 				input logic place_boat,
 				input [2:0] amount_boats,
+				output logic led,
 				output [6:0] segAmount,
 				output [6:0] segPlayer,
 				output [6:0] segPc,
@@ -36,10 +37,7 @@ main_aux main_aux_inst(
 				.vgaclock(vgaclock),
 				.hsync(hsync),
 				.vsync(vsync),
-				.n_blank(n_blank));
-
-
-
-
-
+				.n_blank(n_blank),
+				.led(led)
+				);
 endmodule 

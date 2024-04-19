@@ -16,8 +16,8 @@ module main_aux_tb;
 	 reg rst;
 	 reg full_boat_placed;
 	 reg time_expired;
-	 reg boats_player;
-	 reg boats_pc;
+	 reg [2:0]boats_player;
+	 reg [2:0]boats_pc;
 	 reg player_mov;
 	 reg pc_mov;
 	 reg [2:0]state;
@@ -27,7 +27,7 @@ module main_aux_tb;
 	 reg [2:0] current_boats = 0;
 	 
 	     // Instancia del módulo bajo prueba
-    Battleship_Board dut (row, col, ship_assign, shoot, state, amount_boats, current_boats, board, shootState, countBoat);
+    Battleship_Board dut (clk, rst,row, col, ship_assign, shoot, state, amount_boats, current_boats, board, shootState, countBoat);
 	 Battleship_FSM dut2 (clk, rst, full_boat_placed, time_expired, boats_player, boats_pc, player_mov, pc_mov, state);
 	 PseudoRandomModule random (clk, rst, rand_val1, rand_val2);
 	 update_current_boats current_boats_inst(
@@ -36,6 +36,8 @@ module main_aux_tb;
 		.countBoat(countBoat),
 		.current_boats(current_boats)
 	 );
+	  // Modulo que revisa si todos los barcos han sido posicionados
+
 
     initial begin
 			rand_val1 = 0;
@@ -58,7 +60,7 @@ module main_aux_tb;
 		  
 		  shootState = 0;
 		  countBoat = 3'b0;
-			#40;
+			#10;
 			row = 0;
 			col = 0;
 			ship_assign = 0;
@@ -66,7 +68,7 @@ module main_aux_tb;
 			
 			
 			// Esperar un ciclo
-			#40;	
+			#10;	
 			
 			row = 3;
 			col = 2;
@@ -74,7 +76,7 @@ module main_aux_tb;
 			shoot = 0;
 			// Esperar un ciclo
 			
-			#40;
+			#10;
 			full_boat_placed = 1;
 			row = 3;
 			col = 2;
@@ -82,15 +84,16 @@ module main_aux_tb;
 			shoot = 1;
 			player_mov = 1;
 			// Esperar un ciclo
-			#40;
+			#10;
 			
 			
 			// Esperar un ciclo
-			#40;
+			#10;
 			
 			pc_mov=1;
 			// Esperar un ciclo
-			#40;
+			#10;
+			$finish;
     end
 
     // Generar señal de reloj

@@ -1,12 +1,13 @@
 module place_boats(
-	input wire state, 
+	input logic [2:0] state, 
 	input clock,
    input reset,
-   input wire move_h,
-   input wire move_v,
-   input wire direction,
-	input wire place_boat,
+   input logic move_h,
+   input logic move_v,
+   input logic direction,
+	input logic place_boat,
 	input logic [2:0] amount_boats,
+	input logic [2:0] boats_player,
 	input reg [2:0] current_boat_row,
    input reg [2:0] current_boat_col,
    output reg [2:0] boat_row,
@@ -28,7 +29,7 @@ always @(posedge clock) begin
 		 end
 
 		 if (!reset && move_h_state && !move_h_state_prev) begin
-			  if (direction && current_boat_col < 5 - amount_boats) begin
+			  if (direction && current_boat_col < 5 - (amount_boats - boats_player)) begin
 					// Incrementar boat_col cuando move_h es 1 y direction es 1
 					boat_col <= current_boat_col + 1;
 					boat_row <= current_boat_row;

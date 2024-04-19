@@ -8,8 +8,8 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 	 input reg [4:0] boat_row,
 	 input reg [4:0] boat_col,
 	 input logic [2:0] amount_boats,
-	 input logic win,
-	 input logic lose,
+	 input logic [2:0] boats_player,
+	 input reg [2:0] state, 
     output logic [7:0] red,
     output logic [7:0] green,
     output logic [7:0] blue
@@ -51,10 +51,10 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 		  ajuste_x = 30;
 		  ajuste_y = 29;
 
-		  if (win) begin 
+		  if (state == 3'b011) begin 
 				caso_win();
 		  end
-		  else if (lose) begin
+		  else if (state == 3'b100) begin
 				caso_lose();
 		  end
 			else begin
@@ -91,16 +91,16 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 				
 					index = (i * 10) + (j * 2);
 					
-					if ((i == boat_row && j == boat_col) && amount_boats == 1) begin 
-						caso_barco();
-					end else if ((i == boat_row && j == boat_col || i == boat_row && j == boat_col + 1) && amount_boats == 2) begin
-						caso_barco();
-					end else if ((i == boat_row && j == boat_col || i == boat_row && j == boat_col + 1 || i == boat_row && j == boat_col + 2) && amount_boats == 3) begin
-						caso_barco();
-					end else if ((i == boat_row && j == boat_col || i == boat_row && j == boat_col + 1 || i == boat_row && j == boat_col + 2 || i == boat_row && j == boat_col + 3 ) && amount_boats == 4) begin
-						caso_barco();
-					end else if ((i == boat_row && j == boat_col || i == boat_row && j == boat_col + 1 || i == boat_row && j == boat_col + 2 || i == boat_row && j == boat_col + 3 || i == boat_row && j == boat_col + 4) && amount_boats == 5) begin
-						caso_barco();
+					if ((i == boat_row && j == boat_col) && (amount_boats - boats_player) == 1) begin 
+						caso_poner_barco();
+					end else if ((i == boat_row && j == boat_col || i == boat_row && j == boat_col + 1) && (amount_boats - boats_player) == 2) begin
+						caso_poner_barco();
+					end else if ((i == boat_row && j == boat_col || i == boat_row && j == boat_col + 1 || i == boat_row && j == boat_col + 2) && (amount_boats - boats_player) == 3) begin
+						caso_poner_barco();
+					end else if ((i == boat_row && j == boat_col || i == boat_row && j == boat_col + 1 || i == boat_row && j == boat_col + 2 || i == boat_row && j == boat_col + 3 ) && (amount_boats - boats_player) == 4) begin
+						caso_poner_barco();
+					end else if ((i == boat_row && j == boat_col || i == boat_row && j == boat_col + 1 || i == boat_row && j == boat_col + 2 || i == boat_row && j == boat_col + 3 || i == boat_row && j == boat_col + 4) && (amount_boats - boats_player) == 5) begin
+						caso_poner_barco();
 					end
 					
 					if (array_player[index] == 1'b1 && array_player[index + 1] == 1'b1) begin
@@ -133,7 +133,11 @@ module generadorMatriz #(parameter ancho = 4'd5) (
             red = 8'b11111111;
             green = 8'b11111111;
             blue = 8'b11111111; 
-        end else if (color_azul)begin 
+        end else if (color_celeste)begin
+				red = 8'b01100110;
+				green = 8'b10010100;
+				blue = 8'b11011000;
+		  end else if (color_azul)begin 
 				red = 8'b00000000;
             green = 8'b00000000;
             blue = 8'b11111111;
@@ -145,10 +149,6 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 				red = 8'b00000000;
             green = 8'b11111111;
             blue = 8'b00000000;
-		  end else if (color_celeste)begin
-				red = 8'b01100110;
-				green = 8'b10010100;
-				blue = 8'b11011000;
 		  end else begin
             red = 8'b00000000;
             green = 8'b00000000;
@@ -288,6 +288,14 @@ module generadorMatriz #(parameter ancho = 4'd5) (
 		if (x >= x0 - ajuste_x && x < x0 - ajuste_x + stepx && y >= y0 + ajuste_y && y < y0 + ajuste_y + stepy) begin
 					
 				color_azul = 1;
+		end 
+	 
+	 endfunction
+	 
+	 function void caso_poner_barco();
+		if (x >= x0 - ajuste_x && x < x0 - ajuste_x + stepx && y >= y0 + ajuste_y && y < y0 + ajuste_y + stepy) begin
+					
+				color_celeste = 1;
 		end 
 	 
 	 endfunction
