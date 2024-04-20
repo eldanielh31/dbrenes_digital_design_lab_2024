@@ -4,7 +4,9 @@ module main(input  clock,
 				input logic move_h,
 				input logic move_v,
 				input logic fire,
+				input logic place_boat,
 				input [2:0] amount_boats,
+				output logic led,
 				output [6:0] segAmount,
 				output [6:0] segPlayer,
 				output [6:0] segPc,
@@ -24,6 +26,7 @@ main_aux main_aux_inst(
 				.move_h(move_h),
 				.move_v(move_v),
 				.fire(fire),
+				.place_boat(place_boat),
 				.amount_boats(amount_boats),
 				.segAmount(segAmount),
 				.segPlayer(segPlayer),
@@ -34,10 +37,7 @@ main_aux main_aux_inst(
 				.vgaclock(vgaclock),
 				.hsync(hsync),
 				.vsync(vsync),
-				.n_blank(n_blank));
-
-
-
-
-
+				.n_blank(n_blank),
+				.led(led)
+				);
 endmodule 
