@@ -1,0 +1,43 @@
+module main(input  clock,
+				input  reset,
+				input logic direction,
+				input logic move_h,
+				input logic move_v,
+				input logic fire,
+				input logic place_boat,
+				input [2:0] amount_boats,
+				output logic led,
+				output [6:0] segAmount,
+				output [6:0] segPlayer,
+				output [6:0] segPc,
+				output [7:0] red,
+				output [7:0] green,
+				output [7:0] blue,
+				output vgaclock,
+				output hsync,
+				output vsync,
+				output n_blank);
+				
+
+main_aux main_aux_inst(
+				.clock(clock),
+				.reset(reset),
+				.direction(direction),
+				.move_h(move_h),
+				.move_v(move_v),
+				.fire(fire),
+				.place_boat(place_boat),
+				.amount_boats(amount_boats),
+				.segAmount(segAmount),
+				.segPlayer(segPlayer),
+				.segPc(segPc),
+				.red(red),
+				.green(green),
+				.blue(blue),
+				.vgaclock(vgaclock),
+				.hsync(hsync),
+				.vsync(vsync),
+				.n_blank(n_blank),
+				.led(led)
+				);
+endmodule 
