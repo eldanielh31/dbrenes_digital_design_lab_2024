@@ -1,0 +1,19 @@
+		;Fibonnacci
+		mov		r0, #8          ; n de Fibonacci
+		mov		r1, #0          ; Iteración actual
+		mov		r2, #1          ; Primer término de Fibonacci
+		mov		r3, #0          ; Segundo término de Fibonacci
+		
+L0
+		CMP		r0, r1          ; n == Iteración actual ?
+		BNE		L1              ; Si no es igual, ir al bloque L1
+		BEQ		DONE            ; Si es igual, ir a DONE
+		
+L1
+		ADD		r4, r2, r3      ; r4: Suma de los dos términos anteriores
+		mov		r2, r3          ; Mover el segundo término al primer término
+		mov		r3, r4          ; Mover la suma al segundo término
+		ADD		r1, r1, #1      ; Incrementar el contador de iteración
+		B		L0              ; Volver al inicio del bucle
+		
+DONE
