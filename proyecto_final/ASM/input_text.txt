@@ -1,0 +1,1 @@
+Este es un texto de ejemplo que contiene más de cien palabras. La función del procesador será encontrar palabras con una cantidad específica de vocales y reemplazarlas por un símbolo definido por el usuario. Este es un ejercicio para probar la funcionalidad del programa en ensamblador ARMv4.
