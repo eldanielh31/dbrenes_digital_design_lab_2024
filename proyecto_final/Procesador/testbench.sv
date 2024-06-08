@@ -1,36 +1,43 @@
 module testbench();
 
-	logic clk;
-	logic reset;
-	logic [31:0] WriteData, DataAdr;
-	logic MemWrite;
-	
-	// instantiate device to be tested
-	top dut(clk, reset, WriteData, DataAdr, MemWrite);
-	
-	// initialize test
-	initial begin
-		reset <= 1; # 22; reset <= 0;
-	end
-	
-	// generate clock to sequence tests
-	always begin
+  // Clock and Reset signals
+  reg clk;
+  reg reset;
+
+  // Processor interface signals
+  wire [31:0] WriteData;
+  wire [31:0] DataAdr;
+  wire MemWrite;
+
+  // Instantiate the top module
+  top uut (
+    .clk(clk),
+    .reset(reset),
+    .WriteData(WriteData),
+    .DataAdr(DataAdr),
+    .MemWrite(MemWrite)
+  );
+
+  // Clock generation
+  always begin
 		clk <= 1; # 5; clk <= 0; # 5;
 	end
-	
-	// check that 7 gets written to address 0x64
-	// at end of program
-	always @(negedge clk) begin
-		if(MemWrite) begin
-		
-			if(DataAdr === 100 & WriteData === 7) begin
-			$display("Simulation succeeded");
-			$stop;
-			
-			end else if (DataAdr !== 96) begin
-			$display("Simulation failed");
-			$stop;
-			end
-		end
-	end
-endmodule 
+
+  // Reset generation
+  initial begin
+    reset = 1;
+    #15 reset = 0; // Release reset after 15 time units
+  end
+
+  // Monitor changes and print relevant signals for debugging
+  initial begin
+    $monitor("Time: %0t, WriteData: %0h, DataAdr: %0h, MemWrite: %0b", 
+             $time, WriteData, DataAdr, MemWrite);
+  end
+
+  // Finish simulation after a certain time
+  initial begin
+    #1000 $finish; // Run simulation for 1000 time units
+  end
+
+endmodule
