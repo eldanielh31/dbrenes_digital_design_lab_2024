@@ -72,7 +72,7 @@ module videoGen(
 );
     logic pixel;
     logic [7:0] char;
-    logic [4:0] char_index;
+    logic [11:0] char_index; // Incrementamos el tamaño del índice del carácter
     logic in_text_region;
     logic wren = 1'b0;
 
@@ -83,15 +83,15 @@ module videoGen(
     parameter CHAR_HEIGHT = 8; // Altura del carácter en píxeles
 
     // Calcular el índice de carácter en la RAM en función de la posición x e y
-    assign char_index = (x >= H_START * CHAR_WIDTH && x < (H_START + 20) * CHAR_WIDTH && y >= V_START * CHAR_HEIGHT && y < (V_START + 1) * CHAR_HEIGHT) ? 
-                        (x - H_START * CHAR_WIDTH) / CHAR_WIDTH : 5'd31; // 31 es un espacio en blanco
+    assign char_index = (x >= H_START * CHAR_WIDTH && x < (H_START + 80) * CHAR_WIDTH && y >= V_START * CHAR_HEIGHT && y < (V_START + 30) * CHAR_HEIGHT) ? 
+                        ((x - H_START * CHAR_WIDTH) / CHAR_WIDTH) + ((y - V_START * CHAR_HEIGHT) / CHAR_HEIGHT) * 80 : 12'd0; // Ajustar el cálculo del índice
 
     // Verificar si estamos en la región del texto
-    assign in_text_region = (x >= H_START * CHAR_WIDTH && x < (H_START + 20) * CHAR_WIDTH && y >= V_START * CHAR_HEIGHT && y < (V_START + 1) * CHAR_HEIGHT);
+    assign in_text_region = (x >= H_START * CHAR_WIDTH && x < (H_START + 80) * CHAR_WIDTH && y >= V_START * CHAR_HEIGHT && y < (V_START + 30) * CHAR_HEIGHT);
 
     // Instancia del módulo RAM
     logic [7:0] ram_data;
-    ram1 text_ram (
+    ram text_rom (
         .address(char_index),
         .clock(clk),
         .data(8'd0), // Datos no utilizados en este contexto
@@ -99,15 +99,17 @@ module videoGen(
         .q(ram_data)
     );
 
-    assign char = ram_data;
+    assign char = ram_data - 12'd1;
 
     // Generar los píxeles del carácter
     chargenrom chargenromb(.ch(char), .xoff(x[2:0]), .yoff(y[2:0]), .pixel(pixel));
 
     // Asignar color a los píxeles
-    assign {r, b} = (y[3] == 0 && in_text_region) ? {{8{pixel}}, 8'h00} : {8'h00, {8{pixel}}};
+    assign r = (y[3] == 0 && in_text_region) ? {8{pixel}} : 8'h00;
     assign g = 8'h00; // Se puede usar para agregar color verde si es necesario
+    assign b = 8'h00; // Se puede usar para agregar color azul si es necesario
 endmodule
+
 
 module chargenrom(
     input logic [7:0] ch,
@@ -115,18 +117,18 @@ module chargenrom(
     output logic pixel
 );
 
-    logic [5:0] charrom[2047:0]; // character generator ROM
-    logic [7:0] line; // a line read from the ROM
-    // Initialize ROM with characters from text file
+    logic [5:0] charrom[4095:0]; // Incrementar el tamaño de la ROM de caracteres
+    logic [7:0] line; // una línea leída de la ROM
+    // Inicializar la ROM con caracteres desde un archivo de texto
     initial
     $readmemb("charrom.txt", charrom);
-    // Index into ROM to find line of character
-    assign line = charrom[yoff + {ch-65, 3'b000}]; // Subtract 65 because A
-    // is entry 0
-    // Reverse order of bits
+    // Índice en la ROM para encontrar la línea del carácter
+    assign line = charrom[(ch << 3) + yoff]; // Usar el carácter directamente como índice, y desplazamiento para la línea
+    // Invertir el orden de los bits
     assign pixel = line[3'd7-xoff];
     
 endmodule
+
 
 module rectgen(
     input logic [9:0] x, y, left, top, right, bot,
