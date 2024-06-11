@@ -2,13 +2,15 @@
 .global _start
 
 .equ STDOUT, 1
+.equ RAM_START, 0x00000000  @ Dirección de inicio de la RAM
+.equ RAM_SIZE, 1024          @ Tamaño de la RAM en bytes
 
 _start:
-    @ Load the message address into r1
-    ldr r1, =message
+    @ Load the start address of the message into r1
+    ldr r1, =RAM_START
     
-    @ Load the length of the message into r2
-    ldr r2, =message_end
+    @ Load the end address of the message into r2
+    add r2, r1, #RAM_SIZE
     
     @ Call the function to count words with 3 vowels and replace vowels with *
     bl count_and_replace_vowels
@@ -17,7 +19,7 @@ _start:
     mov r0, #STDOUT
     
     @ Call the write function from the C library to print the modified message
-    ldr r1, =message
+    mov r1, r1
     sub r2, r2, r1   @ Calculate the length of the message
     mov r7, #4       @ Syscall number for write
     swi 0            @ Invoke syscall
@@ -32,11 +34,10 @@ count_and_replace_vowels:
     mov r3, #0      @ Counter for words with 3 vowels
     mov r4, #0      @ Counter for vowels
     mov r5, #0      @ Word length counter (to handle only the current word)
-    ldr r6, =message_end @ Load the end of the message address
     
     loop_start:
         @ Check if we have reached the end of the message
-        cmp r1, r6
+        cmp r1, r2
         bge loop_end
 
         @ Load a character from the message into r7
@@ -124,8 +125,3 @@ count_and_replace_vowels:
     loop_end:
         @ Return
         mov pc, lr
-
-.data
-message:
-    .ascii "Esta es una cadena con 100 palabras, algunas tienen tres vocales. Vamos a cambiar las vocales de esas palabras por *.\n"
-message_end:
