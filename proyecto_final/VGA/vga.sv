@@ -1,10 +1,13 @@
 module vga(
     input logic clk,
+	 input logic [7:0] ram_data,
+	 input logic [7:0] ram1_data,
 	 input logic enable,
     output logic vgaclk, // 25.175 MHz VGA clock
     output logic hsync, vsync,
     output logic sync_b, blank_b, // To monitor & DAC
-    output logic [7:0] r, g, b
+    output logic [7:0] r, g, b,
+	 output logic [11:0] char_index
 ); 
     // To video DAC
     logic [9:0] x, y;
@@ -18,7 +21,7 @@ module vga(
     // Generate monitor timing signals
     vgaController vgaCont(vgaclk, hsync, vsync, sync_b, blank_b, x, y);
     // User-defined module to determine pixel color
-    videoGen videoGen(vgaclk, enable, x, y, r, g, b);
+    videoGen videoGen(vgaclk, enable, ram_data, ram1_data, x, y, r, g, b, char_index);
     
 endmodule
 
@@ -69,12 +72,15 @@ endmodule
 module videoGen(
     input logic clk,
 	 input logic enable,
+	 input logic [7:0] ram_data,
+	 input logic [7:0] ram1_data,
     input logic [9:0] x, y, 
-    output logic [7:0] r, g, b
+    output logic [7:0] r, g, b,
+	 output logic [11:0] char_index
 );
     logic pixel;
     logic [7:0] char;
-    logic [11:0] char_index; // Incrementamos el tamaño del índice del carácter
+    //logic [11:0] char_index; // Incrementamos el tamaño del índice del carácter
     logic in_text_region;
     logic wren = 1'b0;
 
@@ -92,27 +98,8 @@ module videoGen(
     assign in_text_region = (x >= H_START * CHAR_WIDTH && x < (H_START + 80) * CHAR_WIDTH && y >= V_START * CHAR_HEIGHT && y < (V_START + 30) * CHAR_HEIGHT);
 
     // Instancia del módulo RAM
-    logic [7:0] ram_data;
-	 
-	 logic [7:0] ram1_data;
-	 
-    ram text_rom (
-        .address(char_index),
-        .clock(clk),
-        .data(8'd0), // Datos no utilizados en este contexto
-        .wren(wren),
-        .q(ram_data)
-    );
-	 
-	 ram1 tex_rom (
-        .address(char_index),
-        .clock(clk),
-        .data(8'd0), // Datos no utilizados en este contexto
-        .wren(1'b0),
-        .q(ram1_data)
-    );
 
-    assign char = enable ? ram1_data - 12'd1 : ram_data - 12'd1;
+    assign char = enable ? ram1_data - 8'd1 : ram_data - 8'd1;
 
     // Generar los píxeles del carácter
     chargenrom chargenromb(.ch(char), .xoff(x[2:0]), .yoff(y[2:0]), .pixel(pixel));
