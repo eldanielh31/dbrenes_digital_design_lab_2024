@@ -37,7 +37,9 @@ count_and_replace_vowels:
     
     loop_start:
         @ Check if we have reached the end of the message
-        cmp r1, r2
+        @ cmp r1, r2
+        mov r0, #0
+        cmp r0, #1
         bge loop_end
 
         @ Load a character from the message into r7
