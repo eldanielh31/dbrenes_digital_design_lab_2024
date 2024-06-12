@@ -27,7 +27,6 @@ module top(
 	Proce procesador (
 		.clk(clk),
 		.reset(reset), 
-		.start(enable),
 		.WriteData(WriteData), 
 		.DataAdr(DataAdr),
 		.rd(rd_dmem),
@@ -54,7 +53,7 @@ module top(
 
 	vga dut_vga (
 		.clk(clk),
-		.ram_data(rd_dmem),
+		.ram_data(ram_data),
 		.ram1_data(ram1_data),
 		.enable(enable),
 		.vgaclk(vgaclk),
