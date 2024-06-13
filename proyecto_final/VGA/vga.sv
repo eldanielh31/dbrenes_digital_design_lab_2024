@@ -99,7 +99,7 @@ module videoGen(
 
     // Instancia del módulo RAM
 
-    assign char = enable ? ram1_data - 8'd1 : ram_data - 8'd1;
+    assign char = enable ? ram_data - 8'd1 : ram1_data - 8'd1;
 
     // Generar los píxeles del carácter
     chargenrom chargenromb(.ch(char), .xoff(x[2:0]), .yoff(y[2:0]), .pixel(pixel));

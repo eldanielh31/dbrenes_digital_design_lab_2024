@@ -1,7 +1,6 @@
 module top(
 	 input logic clk,
 	 input logic reset,
-	 input logic enable,
 	 input logic [3:0] vocales,
 	 output logic [6:0] segA,
     output logic vgaclk, // 25.175 MHz VGA clock
@@ -36,7 +35,7 @@ module top(
 	memoria_ram text_ram (
         .address(char_index),
         .clock(clk),
-        .data(8'd0), // Datos no utilizados en este contexto
+        .data(vocales), // Datos no utilizados en este contexto
         .wren(1'b0),
         .q(ram_data)
     );
@@ -44,10 +43,10 @@ module top(
 	 assign address_ram1 = MemWrite ? DataAdr: char_index;
 	 
 	 ramUpdatedText updated_ram (
-        .address(address_ram1),
+        .address(char_index),
         .clock(clk),
-        .data(WriteData), // Datos no utilizados en este contexto
-        .wren(MemWrite),
+        .data(8'd0), // Datos no utilizados en este contexto
+        .wren(1'b0),
         .q(ram1_data)
     );
 
@@ -55,7 +54,7 @@ module top(
 		.clk(clk),
 		.ram_data(ram_data),
 		.ram1_data(ram1_data),
-		.enable(enable),
+		.enable(reset),
 		.vgaclk(vgaclk),
 		.hsync(hsync),
 		.vsync(vsync),
